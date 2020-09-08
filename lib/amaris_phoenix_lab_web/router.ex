@@ -32,6 +32,13 @@ defmodule AmarisPhoenixLabWeb.Router do
     live "/projects/:id/edit", ProjectLive.Index, :edit
     live "/projects/:id", ProjectLive.Show, :show
     live "/projects/:id/show/edit", ProjectLive.Show, :edit
+
+    # CMS.Category routes
+    live "/categories", CategoryLive.Index, :index
+    live "/categories/new", CategoryLive.Index, :new
+    live "/categories/:id/edit", CategoryLive.Index, :edit
+    live "/categories/:id", CategoryLive.Show, :show
+    live "/categories/:id/show/edit", CategoryLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.
