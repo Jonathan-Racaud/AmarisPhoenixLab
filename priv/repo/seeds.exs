@@ -9,13 +9,7 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
-alias AmarisPhoenixLab.Accounts
 alias AmarisPhoenixLab.CMS
-
-Accounts.create_user(%{
-  name: "Admin",
-  email: "admin@example.com"
-});
 
 CMS.create_category(%{
   name: "Web"

@@ -1,6 +1,6 @@
 defmodule AmarisPhoenixLab.CMS.UserProject do
   use Ecto.Schema
-  alias AmarisPhoenixLab.Accounts.User
+  alias AmarisPhoenixLab.Users.User
   alias AmarisPhoenixLab.CMS.Project
 
   @primary_key false

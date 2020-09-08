@@ -1,7 +1,7 @@
 defmodule AmarisPhoenixLab.CMS.Project do
   use Ecto.Schema
   import Ecto.Changeset
-  alias AmarisPhoenixLab.Accounts.User
+  alias AmarisPhoenixLab.Users.User
   alias AmarisPhoenixLab.CMS.{UserProject, ProjectCategory, Category}
 
   schema "projects" do
