@@ -1,0 +1,27 @@
+<h1>Show Material</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, AmarisPhoenixLabWeb.MaterialLive.FormComponent,
+    id: @material.id,
+    title: @page_title,
+    action: @live_action,
+    material: @material,
+    return_to: Routes.material_show_path(@socket, :show, @material) %>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @material.name %>
+  </li>
+
+  <li>
+    <strong>Source:</strong>
+    <%= @material.source %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.material_show_path(@socket, :edit, @material), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.material_index_path(@socket, :index) %></span>

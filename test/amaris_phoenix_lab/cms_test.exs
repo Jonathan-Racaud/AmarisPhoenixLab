@@ -183,4 +183,65 @@ defmodule AmarisPhoenixLab.CMSTest do
       assert %Ecto.Changeset{} = CMS.change_material_type(material_type)
     end
   end
+
+  describe "materials" do
+    alias AmarisPhoenixLab.CMS.Material
+
+    @valid_attrs %{name: "some name", source: "some source"}
+    @update_attrs %{name: "some updated name", source: "some updated source"}
+    @invalid_attrs %{name: nil, source: nil}
+
+    def material_fixture(attrs \\ %{}) do
+      {:ok, material} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> CMS.create_material()
+
+      material
+    end
+
+    test "list_materials/0 returns all materials" do
+      material = material_fixture()
+      assert CMS.list_materials() == [material]
+    end
+
+    test "get_material!/1 returns the material with given id" do
+      material = material_fixture()
+      assert CMS.get_material!(material.id) == material
+    end
+
+    test "create_material/1 with valid data creates a material" do
+      assert {:ok, %Material{} = material} = CMS.create_material(@valid_attrs)
+      assert material.name == "some name"
+      assert material.source == "some source"
+    end
+
+    test "create_material/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = CMS.create_material(@invalid_attrs)
+    end
+
+    test "update_material/2 with valid data updates the material" do
+      material = material_fixture()
+      assert {:ok, %Material{} = material} = CMS.update_material(material, @update_attrs)
+      assert material.name == "some updated name"
+      assert material.source == "some updated source"
+    end
+
+    test "update_material/2 with invalid data returns error changeset" do
+      material = material_fixture()
+      assert {:error, %Ecto.Changeset{}} = CMS.update_material(material, @invalid_attrs)
+      assert material == CMS.get_material!(material.id)
+    end
+
+    test "delete_material/1 deletes the material" do
+      material = material_fixture()
+      assert {:ok, %Material{}} = CMS.delete_material(material)
+      assert_raise Ecto.NoResultsError, fn -> CMS.get_material!(material.id) end
+    end
+
+    test "change_material/1 returns a material changeset" do
+      material = material_fixture()
+      assert %Ecto.Changeset{} = CMS.change_material(material)
+    end
+  end
 end
