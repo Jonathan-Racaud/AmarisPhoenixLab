@@ -28,7 +28,8 @@ config :phoenix, :json_library, Jason
 
 config :amaris_phoenix_lab, :pow,
   user: AmarisPhoenixLab.Users.User,
-  repo: AmarisPhoenixLab.Repo
+  repo: AmarisPhoenixLab.Repo,
+  web_module: AmarisPhoenixLabWeb
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
