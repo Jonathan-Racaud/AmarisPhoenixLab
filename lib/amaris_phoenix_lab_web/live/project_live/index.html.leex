@@ -1,4 +1,14 @@
-<h1>Listing Projects</h1>
+<div class="row">
+  <div class="col-auto mr-auto">
+    <h1>Lab projects</h1>
+  </div>
+  <div class="col-auto align-self-center">
+    <div class="btn-action">
+      <%= live_patch "New Project", to: Routes.project_index_path(@socket, :new) %>
+    </div>
+  </div>
+</div>
+<hr class="row my-4">
 
 <%= if @live_action in [:new, :edit] do %>
   <%= live_modal @socket, AmarisPhoenixLabWeb.ProjectLive.FormComponent,
@@ -9,31 +19,15 @@
     return_to: Routes.project_index_path(@socket, :index) %>
 <% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Is deleted</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="projects">
+<div class="row">
+  <ul class="list-group">
     <%= for project <- @projects do %>
-      <tr id="project-<%= project.id %>">
-        <td><%= project.name %></td>
-        <td><%= project.description %></td>
-        <td><%= project.is_deleted %></td>
-
-        <td>
-          <span><%= live_redirect "Show", to: Routes.project_show_path(@socket, :show, project) %></span>
-          <span><%= live_patch "Edit", to: Routes.project_index_path(@socket, :edit, project) %></span>
-          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: project.id, data: [confirm: "Are you sure?"] %></span>
-        </td>
-      </tr>
+      <li class="list-group-item">
+        <%= project.name %>
+        <span><%= live_redirect "Show", to: Routes.project_show_path(@socket, :show, project) %></span>
+        <span><%= live_patch "Edit", to: Routes.project_index_path(@socket, :edit, project) %></span>
+        <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: project.id, data: [confirm: "Are you sure?"] %></span>
+      </li>
     <% end %>
-  </tbody>
-</table>
-
-<span><%= live_patch "New Project", to: Routes.project_index_path(@socket, :new) %></span>
+  </ul>
+</div>
