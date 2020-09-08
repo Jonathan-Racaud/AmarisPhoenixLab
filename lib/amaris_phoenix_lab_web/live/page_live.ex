@@ -5,7 +5,6 @@ defmodule AmarisPhoenixLabWeb.PageLive do
   @impl true
   def mount(_params, session, socket) do
     current_user = Credentials.get_user(socket, session)
-    IO.puts(current_user)
     {:ok, assign(socket, current_user: current_user)}
   end
 
