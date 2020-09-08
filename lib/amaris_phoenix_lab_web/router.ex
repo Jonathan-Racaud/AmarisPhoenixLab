@@ -39,6 +39,13 @@ defmodule AmarisPhoenixLabWeb.Router do
     live "/categories/:id/edit", CategoryLive.Index, :edit
     live "/categories/:id", CategoryLive.Show, :show
     live "/categories/:id/show/edit", CategoryLive.Show, :edit
+
+    # CMS.MaterialType routes
+    live "/material_types", MaterialTypeLive.Index, :index
+    live "/material_types/new", MaterialTypeLive.Index, :new
+    live "/material_types/:id/edit", MaterialTypeLive.Index, :edit
+    live "/material_types/:id", MaterialTypeLive.Show, :show
+    live "/material_types/:id/show/edit", MaterialTypeLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.

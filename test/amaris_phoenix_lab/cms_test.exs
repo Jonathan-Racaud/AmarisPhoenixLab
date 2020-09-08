@@ -124,4 +124,63 @@ defmodule AmarisPhoenixLab.CMSTest do
       assert %Ecto.Changeset{} = CMS.change_category(category)
     end
   end
+
+  describe "material_types" do
+    alias AmarisPhoenixLab.CMS.MaterialType
+
+    @valid_attrs %{name: "some name"}
+    @update_attrs %{name: "some updated name"}
+    @invalid_attrs %{name: nil}
+
+    def material_type_fixture(attrs \\ %{}) do
+      {:ok, material_type} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> CMS.create_material_type()
+
+      material_type
+    end
+
+    test "list_material_types/0 returns all material_types" do
+      material_type = material_type_fixture()
+      assert CMS.list_material_types() == [material_type]
+    end
+
+    test "get_material_type!/1 returns the material_type with given id" do
+      material_type = material_type_fixture()
+      assert CMS.get_material_type!(material_type.id) == material_type
+    end
+
+    test "create_material_type/1 with valid data creates a material_type" do
+      assert {:ok, %MaterialType{} = material_type} = CMS.create_material_type(@valid_attrs)
+      assert material_type.name == "some name"
+    end
+
+    test "create_material_type/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = CMS.create_material_type(@invalid_attrs)
+    end
+
+    test "update_material_type/2 with valid data updates the material_type" do
+      material_type = material_type_fixture()
+      assert {:ok, %MaterialType{} = material_type} = CMS.update_material_type(material_type, @update_attrs)
+      assert material_type.name == "some updated name"
+    end
+
+    test "update_material_type/2 with invalid data returns error changeset" do
+      material_type = material_type_fixture()
+      assert {:error, %Ecto.Changeset{}} = CMS.update_material_type(material_type, @invalid_attrs)
+      assert material_type == CMS.get_material_type!(material_type.id)
+    end
+
+    test "delete_material_type/1 deletes the material_type" do
+      material_type = material_type_fixture()
+      assert {:ok, %MaterialType{}} = CMS.delete_material_type(material_type)
+      assert_raise Ecto.NoResultsError, fn -> CMS.get_material_type!(material_type.id) end
+    end
+
+    test "change_material_type/1 returns a material_type changeset" do
+      material_type = material_type_fixture()
+      assert %Ecto.Changeset{} = CMS.change_material_type(material_type)
+    end
+  end
 end

@@ -1,0 +1,35 @@
+<h1>Listing Material types</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, AmarisPhoenixLabWeb.MaterialTypeLive.FormComponent,
+    id: @material_type.id || :new,
+    title: @page_title,
+    action: @live_action,
+    material_type: @material_type,
+    return_to: Routes.material_type_index_path(@socket, :index) %>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="material_types">
+    <%= for material_type <- @material_types do %>
+      <tr id="material_type-<%= material_type.id %>">
+        <td><%= material_type.name %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.material_type_show_path(@socket, :show, material_type) %></span>
+          <span><%= live_patch "Edit", to: Routes.material_type_index_path(@socket, :edit, material_type) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: material_type.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Material type", to: Routes.material_type_index_path(@socket, :new) %></span>
