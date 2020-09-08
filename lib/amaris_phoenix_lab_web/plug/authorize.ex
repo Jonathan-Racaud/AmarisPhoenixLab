@@ -1,7 +1,7 @@
 defmodule AmarisPhoenixLabWeb.Authorize do
   import Plug.Conn
   import Phoenix.Controller
-  import AmarisPhoenixLab.Authorize
+  import AmarisPhoenixLab.Authorization
   alias AmarisPhoenixLabWeb.Router.Helpers, as: Routes
 
   def init(opts), do: opts
