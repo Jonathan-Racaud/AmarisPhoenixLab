@@ -3,8 +3,8 @@ defmodule AmarisPhoenixLab.Repo.Migrations.AddTableUserProject do
 
   def change do
     create table(:user_projects, primary_key: false) do
-      add(:project_id, references(:projects, on_delete: delete_all), primary_key: true)
-      add(:user_id, references(:users, on_delete: delete_all), primary_key: true)
+      add(:project_id, references(:projects, on_delete: :delete_all), primary_key: true)
+      add(:user_id, references(:users, on_delete: :delete_all), primary_key: true)
 
       timestamps()
     end
