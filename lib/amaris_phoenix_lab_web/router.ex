@@ -51,7 +51,6 @@ defmodule AmarisPhoenixLabWeb.Router do
     live "/materials", MaterialLive.Index, :index
     live "/materials/new", MaterialLive.Index, :new
     live "/materials/:id/edit", MaterialLive.Index, :edit
-
     live "/materials/:id", MaterialLive.Show, :show
     live "/materials/:id/show/edit", MaterialLive.Show, :edit
   end
