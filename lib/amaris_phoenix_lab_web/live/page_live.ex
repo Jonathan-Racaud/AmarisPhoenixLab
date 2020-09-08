@@ -1,9 +1,12 @@
 defmodule AmarisPhoenixLabWeb.PageLive do
   use AmarisPhoenixLabWeb, :live_view
+  alias AmarisPhoenixLabWeb.Credentials
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, query: "", results: %{})}
+  def mount(_params, session, socket) do
+    current_user = Credentials.get_user(socket, session)
+    IO.puts(current_user)
+    {:ok, assign(socket, current_user: current_user)}
   end
 
   @impl true

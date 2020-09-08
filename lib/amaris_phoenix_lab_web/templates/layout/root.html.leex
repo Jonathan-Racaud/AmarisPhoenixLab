@@ -29,7 +29,14 @@
 
           <div class="collapse navbar-collapse row justify-content-end" id="navbarNav">
             <div class="navbar-nav">
-              <a href="#" class="nav-link">My Account</a>
+              <%= if Map.has_key?(@conn, :current_user) do %>
+                <%= link @current_user.email, to: "#" %>
+                <%= link "Sign out", to: "/session/delete", method: :delete, class: "nav-link" %>
+              <% else %>
+                <%= link "Register", to: "/registration/new", class: "nav-link" %>
+                <%= link "Sign in", to: "/session/new", class: "nav-link" %>
+              <% end %>
+
             </div>
           </div>
 
