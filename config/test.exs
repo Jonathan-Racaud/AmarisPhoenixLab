@@ -7,7 +7,7 @@ use Mix.Config
 # Run `mix help test` for more information.
 config :amaris_phoenix_lab, AmarisPhoenixLab.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "DaVinci",
   database: "amaris_phoenix_lab_test#{System.get_env("MIX_TEST_PARTITION")}",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
