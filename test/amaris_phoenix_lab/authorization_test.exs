@@ -3,7 +3,7 @@ defmodule AmarisPhoenixLab.AuthorizationTest do
   import AmarisPhoenixLab.Authorization, except: [can: 1]
   alias AmarisPhoenixLab.CMS.Project
 
-  def can("kiosk" = role) do
+  def can("regular" = role) do
     grant(role)
     |> read(Project)
   end
@@ -13,17 +13,14 @@ defmodule AmarisPhoenixLab.AuthorizationTest do
   end
 
   test "regular cannot create resource" do
-    can_create = can("regular") |> create?(Project) == false
-    assert can_create
+    refute can("regular") |> create?(Project)
   end
 
   test "regular cannot update resource" do
-    can_update = can("regular") |> update?(Project) == false
-    assert can_update
+    refute can("regular") |> update?(Project)
   end
 
   test "regular cannot delete resource" do
-    can_delete = can("regular") |> delete?(Project) == false
-    assert can_delete
+    refute can("regular") |> delete?(Project)
   end
 end
