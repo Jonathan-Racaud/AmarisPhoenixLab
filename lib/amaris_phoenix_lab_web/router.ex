@@ -11,6 +11,11 @@ defmodule AmarisPhoenixLabWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :protected do
+    plug Pow.Plug.RequireAuthenticated,
+      error_handler: Pow.Phoenix.PlugErrorHandler
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -25,6 +30,10 @@ defmodule AmarisPhoenixLabWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
+  end
+
+  scope "/", AmarisPhoenixLabWeb do
+    pipe_through [:browser, :protected]
 
     # CMS.Project routes
     live "/projects", ProjectLive.Index, :index
