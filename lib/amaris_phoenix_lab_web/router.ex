@@ -19,13 +19,6 @@ defmodule AmarisPhoenixLabWeb.Router do
 
     live "/", PageLive, :index
 
-    # Accounts.User routes
-    live "/users", UserLive.Index, :index
-    live "/users/new", UserLive.Index, :new
-    live "/users/:id/edit", UserLive.Index, :edit
-    live "/users/:id", UserLive.Show, :show
-    live "/users/:id/show/edit", UserLive.Show, :edit
-
     # CMS.Project routes
     live "/projects", ProjectLive.Index, :index
     live "/projects/new", ProjectLive.Index, :new
