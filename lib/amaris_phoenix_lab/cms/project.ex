@@ -19,7 +19,7 @@ defmodule AmarisPhoenixLab.CMS.Project do
   @doc false
   def changeset(project, attrs) do
     project
-    |> cast(attrs, [:name, :description, :is_deleted])
-    |> validate_required([:name, :description, :is_deleted])
+    |> cast(attrs, [:name, :description])
+    |> validate_required([:name, :description])
   end
 end
