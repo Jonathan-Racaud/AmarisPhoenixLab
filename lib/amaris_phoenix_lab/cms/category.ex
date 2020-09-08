@@ -1,9 +1,12 @@
 defmodule AmarisPhoenixLab.CMS.Category do
   use Ecto.Schema
   import Ecto.Changeset
+  alias AmarisPhoenixLab.CMS.{ProjectCategory, Project}
 
   schema "categories" do
     field :name, :string
+
+    many_to_many :project_categories, Project, join_through: ProjectCategory, on_replace: :delete
 
     timestamps()
   end
