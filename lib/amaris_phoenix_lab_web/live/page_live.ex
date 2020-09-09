@@ -1,6 +1,7 @@
 defmodule AmarisPhoenixLabWeb.PageLive do
   use AmarisPhoenixLabWeb, :live_view
   alias AmarisPhoenixLabWeb.Credentials
+  alias AmarisPhoenixLab.Users
 
   @impl true
   def mount(_params, session, socket) do

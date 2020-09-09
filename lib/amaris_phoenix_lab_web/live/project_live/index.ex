@@ -3,6 +3,7 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Index do
   alias AmarisPhoenixLab.CMS
   alias AmarisPhoenixLab.CMS.Project
   alias AmarisPhoenixLabWeb.Credentials
+  alias AmarisPhoenixLab.Users
 
   @impl true
   def mount(_params, session, socket) do

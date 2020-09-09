@@ -6,33 +6,39 @@
 </section>
 
 <%= if @current_user do %>
-<section class="row">
-  <div class="col-sm-4 mt-2">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Administration</h5>
-        <p class="card-text">Manage users and projects</p>
-        <a href="#" class="card-link">Access</a>
+  <section class="row">
+
+    <%= if Users.is_admin?(@current_user) do %>
+      <div class="col-sm-4 mt-2">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Administration</h5>
+            <p class="card-text">Manage users and projects</p>
+            <a href="#" class="card-link">Access</a>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="col-sm-4 mt-2">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Projects</h5>
+          <p class="card-text">Access the Amaris Lab projects</p>
+          <a href="/projects" class="card-link">Access</a>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="col-sm-4 mt-2">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Projects</h5>
-        <p class="card-text">Access the Amaris Lab projects</p>
-        <a href="/projects" class="card-link">Access</a>
+
+    <div class="col-sm-4 mt-2">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Users</h5>
+          <p class="card-text">See the list of contributors</p>
+          <a href="/users" class="card-link">Access</a>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="col-sm-4 mt-2">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Users</h5>
-        <p class="card-text">See the list of contributors</p>
-        <a href="/users" class="card-link">Access</a>
-      </div>
-    </div>
-  </div>
-</section>
+
+  </section>
 <% end %>

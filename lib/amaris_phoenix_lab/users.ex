@@ -17,7 +17,7 @@ defmodule AmarisPhoenixLab.Users do
     |> Repo.insert()
   end
 
-  @spec create_admin(map()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
+  @spec create_user(map()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
   def create_user(params) do
     %User{}
     |> User.changeset(params)
@@ -31,4 +31,8 @@ defmodule AmarisPhoenixLab.Users do
     |> User.changeset_role(%{role: "admin"})
     |> Repo.update()
   end
+
+  @spec is_admin?(t()) :: boolean()
+  def is_admin?(%{role: "admin"}), do: true
+  def is_admin?(_any), do: false
 end

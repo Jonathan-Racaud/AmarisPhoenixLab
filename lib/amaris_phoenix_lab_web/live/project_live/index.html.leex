@@ -2,11 +2,13 @@
   <div class="col-auto mr-auto">
     <h1>Lab projects</h1>
   </div>
-  <div class="col-auto align-self-center">
-    <div class="btn-action">
-      <%= live_patch "New Project", to: Routes.project_index_path(@socket, :new) %>
+  <%= if Users.is_admin?(@current_user) do %>
+    <div class="col-auto align-self-center">
+      <div class="btn-action">
+        <%= live_patch "New Project", to: Routes.project_index_path(@socket, :new) %>
+      </div>
     </div>
-  </div>
+  <% end %>
 </div>
 <hr class="row my-4">
 
@@ -25,8 +27,11 @@
       <li class="list-group-item">
         <%= project.name %>
         <span><%= live_redirect "Show", to: Routes.project_show_path(@socket, :show, project) %></span>
-        <span><%= live_patch "Edit", to: Routes.project_index_path(@socket, :edit, project) %></span>
-        <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: project.id, data: [confirm: "Are you sure?"] %></span>
+
+        <%= if Users.is_admin?(@current_user) do %>
+          <span><%= live_patch "Edit", to: Routes.project_index_path(@socket, :edit, project) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: project.id, data: [confirm: "Are you sure?"] %></span>
+        <% end %>
       </li>
     <% end %>
   </ul>
