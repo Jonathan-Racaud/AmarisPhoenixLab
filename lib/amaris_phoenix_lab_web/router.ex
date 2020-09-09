@@ -42,15 +42,18 @@ defmodule AmarisPhoenixLabWeb.Router do
     # CMS.Project routes
     live "/projects", ProjectLive.Index, :index
     live "/projects/:id", ProjectLive.Show, :show
-  end
-
-  scope "/", AmarisPhoenixLabWeb do
-    pipe_through [:browser, :authenticated, :admin]
-
-    # CMS.Project routes
     live "/projects/new", ProjectLive.Index, :new
     live "/projects/:id/edit", ProjectLive.Index, :edit
     live "/projects/:id/show/edit", ProjectLive.Show, :edit
+  end
+
+  scope "/", AmarisPhoenixLabWeb do
+    pipe_through [:browser, :authenticated]
+
+    # CMS.Project routes
+    # live "/projects/new", ProjectLive.Index, :new
+    # live "/projects/:id/edit", ProjectLive.Index, :edit
+    # live "/projects/:id/show/edit", ProjectLive.Show, :edit
 
     # CMS.Category routes
     live "/categories", CategoryLive.Index, :index
