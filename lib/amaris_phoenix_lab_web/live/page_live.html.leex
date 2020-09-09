@@ -5,6 +5,7 @@
   <p><%= gettext "This is a demo project that allows the creation of projects, assign users to projects. It is a POC for the Phoenix Framework and its new live view feature. It connects to a PostgreSQL database and has basic Auth capabilities." %></p>
 </section>
 
+<%= if @current_user do %>
 <section class="row">
   <div class="col-sm-4 mt-2">
     <div class="card">
@@ -34,3 +35,4 @@
     </div>
   </div>
 </section>
+<% end %>
