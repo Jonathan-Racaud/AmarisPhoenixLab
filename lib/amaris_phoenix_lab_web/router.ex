@@ -11,9 +11,13 @@ defmodule AmarisPhoenixLabWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  pipeline :protected do
+  pipeline :authenticated do
     plug Pow.Plug.RequireAuthenticated,
       error_handler: Pow.Phoenix.PlugErrorHandler
+  end
+
+  pipeline :admin do
+    plug AmarisPhoenixLabWeb.EnsureRolePlug, :admin
   end
 
   pipeline :api do
@@ -33,13 +37,19 @@ defmodule AmarisPhoenixLabWeb.Router do
   end
 
   scope "/", AmarisPhoenixLabWeb do
-    pipe_through [:browser, :protected]
+    pipe_through [:browser, :authenticated]
 
     # CMS.Project routes
     live "/projects", ProjectLive.Index, :index
+    live "/projects/:id", ProjectLive.Show, :show
+  end
+
+  scope "/", AmarisPhoenixLabWeb do
+    pipe_through [:browser, :authenticated, :admin]
+
+    # CMS.Project routes
     live "/projects/new", ProjectLive.Index, :new
     live "/projects/:id/edit", ProjectLive.Index, :edit
-    live "/projects/:id", ProjectLive.Show, :show
     live "/projects/:id/show/edit", ProjectLive.Show, :edit
 
     # CMS.Category routes

@@ -5,99 +5,30 @@ defmodule AmarisPhoenixLab.Users do
 
   import Ecto.Query, warn: false
   alias AmarisPhoenixLab.Repo
-  alias AmarisPhoenixLab.Users.Role
+  alias AmarisPhoenixLab.Users.User
 
-  @doc """
-  Returns the list of roles.
+  @type t :: %User{}
 
-  ## Examples
-
-      iex> list_roles()
-      [%Role{}, ...]
-
-  """
-  def list_roles do
-    Repo.all(Role)
-  end
-
-  @doc """
-  Gets a single role.
-
-  Raises `Ecto.NoResultsError` if the Role does not exist.
-
-  ## Examples
-
-      iex> get_role!(123)
-      %Role{}
-
-      iex> get_role!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_role!(id), do: Repo.get!(Role, id)
-
-  @doc """
-  Creates a role.
-
-  ## Examples
-
-      iex> create_role(%{field: value})
-      {:ok, %Role{}}
-
-      iex> create_role(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_role(attrs \\ %{}) do
-    %Role{}
-    |> Role.changeset(attrs)
+  @spec create_admin(map()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
+  def create_admin(params) do
+    %User{}
+    |> User.changeset(params)
+    |> User.changeset_role(%{role: "admin"})
     |> Repo.insert()
   end
 
-  @doc """
-  Updates a role.
+  @spec create_admin(map()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
+  def create_user(params) do
+    %User{}
+    |> User.changeset(params)
+    |> User.changeset_role(%{role: "user"})
+    |> Repo.insert()
+  end
 
-  ## Examples
-
-      iex> update_role(role, %{field: new_value})
-      {:ok, %Role{}}
-
-      iex> update_role(role, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_role(%Role{} = role, attrs) do
-    role
-    |> Role.changeset(attrs)
+  @spec set_admin_role(t()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
+  def set_admin_role(user) do
+    user
+    |> User.changeset_role(%{role: "admin"})
     |> Repo.update()
-  end
-
-  @doc """
-  Deletes a role.
-
-  ## Examples
-
-      iex> delete_role(role)
-      {:ok, %Role{}}
-
-      iex> delete_role(role)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_role(%Role{} = role) do
-    Repo.delete(role)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking role changes.
-
-  ## Examples
-
-      iex> change_role(role)
-      %Ecto.Changeset{data: %Role{}}
-
-  """
-  def change_role(%Role{} = role, attrs \\ %{}) do
-    Role.changeset(role, attrs)
   end
 end

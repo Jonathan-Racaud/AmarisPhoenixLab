@@ -12,12 +12,16 @@
 alias AmarisPhoenixLab.CMS
 alias AmarisPhoenixLab.Users
 
-Users.create_role(%{
-  name: "Admin"
+Users.create_admin(%{
+  email: "admin@example.com",
+  password: "password",
+  password_confirmation: "password"
 })
 
-Users.create_role(%{
-  name: "Regular"
+Users.create_user(%{
+  email: "user@example.com",
+  password: "password",
+  password_confirmation: "password"
 })
 
 CMS.create_category(%{
