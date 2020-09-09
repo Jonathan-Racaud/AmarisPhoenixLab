@@ -1,6 +1,5 @@
 defmodule AmarisPhoenixLabWeb.PageLive do
   use AmarisPhoenixLabWeb, :live_view
-  import AmarisPhoenixLab.Authorization
   alias AmarisPhoenixLabWeb.Credentials
 
   @impl true

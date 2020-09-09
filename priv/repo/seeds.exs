@@ -10,6 +10,15 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 alias AmarisPhoenixLab.CMS
+alias AmarisPhoenixLab.Users
+
+Users.create_role(%{
+  name: "Admin"
+})
+
+Users.create_role(%{
+  name: "Regular"
+})
 
 CMS.create_category(%{
   name: "Web"
