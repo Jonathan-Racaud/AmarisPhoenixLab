@@ -39,23 +39,25 @@ defmodule AmarisPhoenixLabWeb.Router do
   scope "/", AmarisPhoenixLabWeb do
     pipe_through [:browser, :authenticated]
 
+    ## CMS.Project routes
+    live "/projects", ProjectLive.Index, :index
+    live "/projects/:id", ProjectLive.Show, :show
+
+    live "/categories", CategoryLive.Index, :index
+    live "/categories/:id", CategoryLive.Show, :show
   end
 
   scope "/", AmarisPhoenixLabWeb do
     pipe_through [:browser, :authenticated, :admin]
 
     ## CMS.Project routes
-    live "/projects", ProjectLive.Index, :index
     live "/projects/new", ProjectLive.Index, :new # Needs to be put befor /projects/:id otherwise "new" is sent as the :id
     live "/projects/:id/edit", ProjectLive.Index, :edit
-    live "/projects/:id", ProjectLive.Show, :show
     live "/projects/:id/show/edit", ProjectLive.Show, :edit
 
     # CMS.Category routes
-    live "/categories", CategoryLive.Index, :index
     live "/categories/new", CategoryLive.Index, :new
     live "/categories/:id/edit", CategoryLive.Index, :edit
-    live "/categories/:id", CategoryLive.Show, :show
     live "/categories/:id/show/edit", CategoryLive.Show, :edit
 
     # CMS.MaterialType routes
@@ -65,12 +67,12 @@ defmodule AmarisPhoenixLabWeb.Router do
     live "/material_types/:id", MaterialTypeLive.Show, :show
     live "/material_types/:id/show/edit", MaterialTypeLive.Show, :edit
 
-    # CMS.Material routes
-    live "/materials", MaterialLive.Index, :index
-    live "/materials/new", MaterialLive.Index, :new
-    live "/materials/:id/edit", MaterialLive.Index, :edit
-    live "/materials/:id", MaterialLive.Show, :show
-    live "/materials/:id/show/edit", MaterialLive.Show, :edit
+    # # CMS.Material routes
+    # live "/materials", MaterialLive.Index, :index
+    # live "/materials/new", MaterialLive.Index, :new
+    # live "/materials/:id/edit", MaterialLive.Index, :edit
+    # live "/materials/:id", MaterialLive.Show, :show
+    # live "/materials/:id/show/edit", MaterialLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.
