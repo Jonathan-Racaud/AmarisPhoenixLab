@@ -1,6 +1,5 @@
 defmodule AmarisPhoenixLabWeb.ProjectLive.Index do
   use AmarisPhoenixLabWeb, :live_view
-  import AmarisPhoenixLab.Authorization
   alias AmarisPhoenixLab.CMS
   alias AmarisPhoenixLab.CMS.Project
   alias AmarisPhoenixLabWeb.Credentials
@@ -40,10 +39,6 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Index do
     {:ok, _} = CMS.delete_project(project)
 
     {:noreply, assign(socket, :projects, list_projects())}
-  end
-
-  def can_create(socket) do
-    false
   end
 
   defp list_projects do
