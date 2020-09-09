@@ -39,21 +39,17 @@ defmodule AmarisPhoenixLabWeb.Router do
   scope "/", AmarisPhoenixLabWeb do
     pipe_through [:browser, :authenticated]
 
-    # CMS.Project routes
-    live "/projects", ProjectLive.Index, :index
-    live "/projects/:id", ProjectLive.Show, :show
-    live "/projects/new", ProjectLive.Index, :new
-    live "/projects/:id/edit", ProjectLive.Index, :edit
-    live "/projects/:id/show/edit", ProjectLive.Show, :edit
   end
 
   scope "/", AmarisPhoenixLabWeb do
-    pipe_through [:browser, :authenticated]
+    pipe_through [:browser, :authenticated, :admin]
 
-    # CMS.Project routes
-    # live "/projects/new", ProjectLive.Index, :new
-    # live "/projects/:id/edit", ProjectLive.Index, :edit
-    # live "/projects/:id/show/edit", ProjectLive.Show, :edit
+    ## CMS.Project routes
+    live "/projects", ProjectLive.Index, :index
+    live "/projects/new", ProjectLive.Index, :new # Needs to be put befor /projects/:id otherwise "new" is sent as the :id
+    live "/projects/:id/edit", ProjectLive.Index, :edit
+    live "/projects/:id", ProjectLive.Show, :show
+    live "/projects/:id/show/edit", ProjectLive.Show, :edit
 
     # CMS.Category routes
     live "/categories", CategoryLive.Index, :index

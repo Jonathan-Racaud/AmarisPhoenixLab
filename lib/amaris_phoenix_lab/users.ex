@@ -2,10 +2,7 @@ defmodule AmarisPhoenixLab.Users do
   @moduledoc """
   The Users context.
   """
-
-  import Ecto.Query, warn: false
-  alias AmarisPhoenixLab.Repo
-  alias AmarisPhoenixLab.Users.User
+  alias AmarisPhoenixLab.{Repo, Users.User}
 
   @type t :: %User{}
 
