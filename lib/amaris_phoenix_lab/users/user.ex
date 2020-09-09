@@ -4,6 +4,7 @@ defmodule AmarisPhoenixLab.Users.User do
 
   schema "users" do
     pow_user_fields()
+    field :role_id, :id
 
     timestamps()
   end
