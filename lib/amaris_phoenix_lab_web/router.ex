@@ -24,31 +24,6 @@ defmodule AmarisPhoenixLabWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/" do
-    pipe_through :browser
-
-    pow_routes()
-  end
-
-  scope "/", AmarisPhoenixLabWeb do
-    pipe_through :browser
-
-    live "/", PageLive, :index
-  end
-
-  scope "/", AmarisPhoenixLabWeb do
-    pipe_through [:browser, :authenticated]
-
-    # CMS.Category route
-    live "/categories", CategoryLive.Index, :index
-
-    # CMS.Project routes
-    live "/projects", ProjectLive.Index, :index
-
-    # Users.User routes
-    live "/users", UserLive.Index, :index
-  end
-
   scope "/", AmarisPhoenixLabWeb do
     pipe_through [:browser, :authenticated, :admin]
 
@@ -73,21 +48,34 @@ defmodule AmarisPhoenixLabWeb.Router do
     live "/users/new", UserLive.Index, :new
     live "/users/:id/edit", UserLive.Index, :edit
     live "/users/:id/show/edit", UserLive.Show, :edit
-
-    # # CMS.Material routes
-    # live "/materials", MaterialLive.Index, :index
-    # live "/materials/new", MaterialLive.Index, :new
-    # live "/materials/:id/edit", MaterialLive.Index, :edit
-    # live "/materials/:id", MaterialLive.Show, :show
-    # live "/materials/:id/show/edit", MaterialLive.Show, :edit
   end
 
   scope "/", AmarisPhoenixLabWeb do
     pipe_through [:browser, :authenticated]
 
-    live "/users/:id", UserLive.Show, :show
-    live "/projects/:id", ProjectLive.Show, :show
+    # CMS.Category route
+    live "/categories", CategoryLive.Index, :index
     live "/categories/:id", CategoryLive.Show, :show
+
+    # CMS.Project routes
+    live "/projects", ProjectLive.Index, :index
+    live "/projects/:id", ProjectLive.Show, :show
+
+    # Users.User routes
+    live "/users", UserLive.Index, :index
+    live "/users/:id", UserLive.Show, :show
+  end
+
+  scope "/", AmarisPhoenixLabWeb do
+    pipe_through :browser
+
+    live "/", PageLive, :index
+  end
+
+  scope "/" do
+    pipe_through :browser
+
+    pow_routes()
   end
 
   # Other scopes may use custom stacks.
