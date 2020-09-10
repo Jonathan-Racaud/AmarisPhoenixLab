@@ -2,6 +2,10 @@ defmodule AmarisPhoenixLab.Users do
   @moduledoc """
   The Users context.
   """
+  use Pow.Ecto.Context,
+    repo: AmarisPhoenixLab.Repo,
+    user: AmarisPhoenixLab.Users.User
+  import Ecto.Query
   alias AmarisPhoenixLab.{Repo, Users.User}
 
   @type t :: %User{}
@@ -16,10 +20,11 @@ defmodule AmarisPhoenixLab.Users do
 
   @spec create_user(map()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
   def create_user(params) do
-    %User{}
-    |> User.changeset(params)
-    |> User.changeset_role(%{role: "user"})
-    |> Repo.insert()
+    # %User{}
+    # |> User.changeset(params)
+    # |> User.changeset_role(%{role: "user"})
+    # |> Repo.insert()
+    pow_create(params)
   end
 
   @spec set_admin_role(t()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
@@ -32,4 +37,18 @@ defmodule AmarisPhoenixLab.Users do
   @spec is_admin?(t()) :: boolean()
   def is_admin?(%{role: "admin"}), do: true
   def is_admin?(_any), do: false
+
+  def change_user(%User{} = user, attrs \\ %{}) do
+    User.changeset(user, attrs)
+  end
+
+  # def authenticate(params), do: pow_authenticate(params)
+
+  def update_user(attrs) do
+    pow_create(attrs)
+  end
+
+  def list_users do
+    Repo.all(User)
+  end
 end

@@ -28,6 +28,7 @@ config :phoenix, :json_library, Jason
 
 config :amaris_phoenix_lab, :pow,
   user: AmarisPhoenixLab.Users.User,
+  users_context: AmarisPhoenixLab.Users,
   repo: AmarisPhoenixLab.Repo,
   web_module: AmarisPhoenixLabWeb
 

@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-auto mr-auto">
+    <h1>Users</h1>
+  </div>
+  <%= if Users.is_admin?(@current_user) do %>
+    <div class="col-auto align-self-center">
+      <div class="btn-action">
+        <%= live_patch "New User", to: Routes.user_index_path(@socket, :new) %>
+      </div>
+    </div>
+  <% end %>
+</div>
+<hr class="row my-4">
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, AmarisPhoenixLabWeb.UserLive.FormComponent,
+    id: @project.id || :new,
+    title: @page_title,
+    action: @live_action,
+    user: @user,
+    return_to: Routes.user_index_path(@socket, :index) %>
+<% end %>
+
+<div class="row">
+  <ul class="list-group">
+    <%= for user <- @users do %>
+      <li class="list-group-item">
+        <%= user.email %>
+        <span><%= live_redirect "Show", to: Routes.user_show_path(@socket, :show, user) %></span>
+
+        <%= if Users.is_admin?(@current_user) do %>
+          <span><%= live_patch "Edit", to: Routes.user_index_path(@socket, :edit, user) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: user.id, data: [confirm: "Are you sure?"] %></span>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</div>
