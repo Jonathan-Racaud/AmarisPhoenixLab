@@ -35,7 +35,11 @@ defmodule AmarisPhoenixLab.CMS do
       ** (Ecto.NoResultsError)
 
   """
-  def get_project!(id), do: Repo.get!(Project, id)
+  def get_project!(id) do
+    Repo.get!(Project, id)
+    |> Repo.preload(:user_projects)
+    |> Repo.preload(:project_categories)
+  end
 
   @doc """
   Creates a project.

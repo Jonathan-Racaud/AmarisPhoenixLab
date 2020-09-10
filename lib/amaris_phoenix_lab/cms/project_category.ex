@@ -3,7 +3,7 @@ defmodule AmarisPhoenixLab.CMS.ProjectCategory do
   alias AmarisPhoenixLab.CMS.{Category, Project}
 
   @primary_key false
-  schema "user_projects" do
+  schema "project_categories" do
     belongs_to :projects, Project
     belongs_to :categories, Category
 
