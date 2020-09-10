@@ -8,6 +8,7 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Index do
   @impl true
   def mount(_params, session, socket) do
     current_user = Credentials.get_user(socket, session)
+
     {:ok, assign(socket, projects: list_projects(), current_user: current_user)}
   end
 
@@ -25,7 +26,7 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Index do
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "New Project")
-    |> assign(:project, %Project{})
+    |> assign(:project, get_new_project())
   end
 
   defp apply_action(socket, :index, _params) do
@@ -44,5 +45,19 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Index do
 
   defp list_projects do
     CMS.list_projects()
+  end
+
+  defp list_categories do
+    CMS.list_categories()
+  end
+
+  defp list_users do
+    Users.list_users()
+  end
+
+  def get_new_project do
+    %Project{}
+    |> Map.put(:contributors, [])
+    |> Map.put(:categories, [])
   end
 end

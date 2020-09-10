@@ -5,6 +5,7 @@ defmodule AmarisPhoenixLab.Users do
   use Pow.Ecto.Context,
     repo: AmarisPhoenixLab.Repo,
     user: AmarisPhoenixLab.Users.User
+  import Ecto.Query
   alias AmarisPhoenixLab.{Repo, Users.User}
 
   @type t :: %User{}
@@ -19,10 +20,6 @@ defmodule AmarisPhoenixLab.Users do
 
   @spec create_user(map()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
   def create_user(params) do
-    # %User{}
-    # |> User.changeset(params)
-    # |> User.changeset_role(%{role: "user"})
-    # |> Repo.insert()
     pow_create(params)
   end
 
@@ -30,6 +27,7 @@ defmodule AmarisPhoenixLab.Users do
   def set_admin_role(user) do
     user
     |> User.changeset_role(%{role: "admin"})
+    |> Repo.preload(:projects)
     |> Repo.update()
   end
 
@@ -46,11 +44,18 @@ defmodule AmarisPhoenixLab.Users do
   end
 
   def list_users do
-    Repo.all(User)
+    User
+    |> select([:id, :email, :role])
+    |> Repo.all
+    |> Repo.preload(:projects)
   end
 
-  def get_with_projects(clauses) do
-    get_by(clauses)
-    |> Repo.preload(:user_projects)
+  def get_users(nil), do: []
+  def get_users(ids) do
+    IO.puts("Getting users")
+      User
+      |> where([u], u.id in ^ids)
+      |> Repo.preload(:projects)
+      |> Repo.all
   end
 end

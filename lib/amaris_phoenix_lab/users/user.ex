@@ -5,7 +5,7 @@ defmodule AmarisPhoenixLab.Users.User do
 
   schema "users" do
     field :role, :string, default: "user"
-    many_to_many :user_projects, Project, join_through: UserProject, on_replace: :delete
+    many_to_many :projects, Project, join_through: UserProject, on_replace: :delete
 
     pow_user_fields()
 

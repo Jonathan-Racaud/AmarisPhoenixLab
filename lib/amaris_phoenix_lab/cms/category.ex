@@ -6,7 +6,7 @@ defmodule AmarisPhoenixLab.CMS.Category do
   schema "categories" do
     field :name, :string
 
-    many_to_many :project_categories, Project, join_through: ProjectCategory, on_replace: :delete
+    many_to_many :projects, Project, join_through: ProjectCategory, on_replace: :delete
 
     timestamps()
   end

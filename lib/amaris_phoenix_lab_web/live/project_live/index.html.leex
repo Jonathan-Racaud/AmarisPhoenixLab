@@ -18,6 +18,8 @@
     title: @page_title,
     action: @live_action,
     project: @project,
+    categories: list_categories(),
+    users: list_users(),
     return_to: Routes.project_index_path(@socket, :index) %>
 <% end %>
 

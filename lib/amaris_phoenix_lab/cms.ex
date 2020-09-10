@@ -7,6 +7,7 @@ defmodule AmarisPhoenixLab.CMS do
   alias AmarisPhoenixLab.Repo
 
   alias AmarisPhoenixLab.CMS.Project
+  alias AmarisPhoenixLab.Users
 
   @doc """
   Returns the list of projects.
@@ -18,7 +19,10 @@ defmodule AmarisPhoenixLab.CMS do
 
   """
   def list_projects do
-    Repo.all(Project)
+    Project
+    |> Repo.all
+    |> Repo.preload(:contributors)
+    |> Repo.preload(:categories)
   end
 
   @doc """
@@ -37,8 +41,8 @@ defmodule AmarisPhoenixLab.CMS do
   """
   def get_project!(id) do
     Repo.get!(Project, id)
-    |> Repo.preload(:user_projects)
-    |> Repo.preload(:project_categories)
+    |> Repo.preload(:contributors)
+    |> Repo.preload(:categories)
   end
 
   @doc """
@@ -56,6 +60,7 @@ defmodule AmarisPhoenixLab.CMS do
   def create_project(attrs \\ %{}) do
     %Project{}
     |> Project.changeset(attrs)
+    |> maybe_put_contributors(attrs)
     |> Repo.insert()
   end
 
@@ -74,6 +79,7 @@ defmodule AmarisPhoenixLab.CMS do
   def update_project(%Project{} = project, attrs) do
     project
     |> Project.changeset(attrs)
+    |> maybe_put_contributors(attrs)
     |> Repo.update()
   end
 
@@ -105,6 +111,13 @@ defmodule AmarisPhoenixLab.CMS do
   def change_project(%Project{} = project, attrs \\ %{}) do
     Project.changeset(project, attrs)
   end
+
+  defp maybe_put_contributors(changeset, params) do
+    contributors = Users.get_users(params["contributors_id"])
+
+    Ecto.Changeset.put_assoc(changeset, :contributors, contributors)
+  end
+  # defp maybe_put_contributors(changeset, _), do: changeset
 
   alias AmarisPhoenixLab.CMS.Category
 

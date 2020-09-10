@@ -31,6 +31,9 @@
   <% end %>
 </ul>
 
+<h3>Contributors</h3>
+
+
 <%= if Users.is_admin?(@current_user) do %>
   <span><%= live_patch "Edit", to: Routes.project_show_path(@socket, :edit, @project), class: "button" %></span>
 <% end %>

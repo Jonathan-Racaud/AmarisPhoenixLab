@@ -14,7 +14,7 @@
 
 <%= if @live_action in [:new, :edit] do %>
   <%= live_modal @socket, AmarisPhoenixLabWeb.UserLive.FormComponent,
-    id: @project.id || :new,
+    id: @user.id || :new,
     title: @page_title,
     action: @live_action,
     user: @user,

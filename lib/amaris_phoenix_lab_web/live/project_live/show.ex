@@ -13,13 +13,14 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Show do
 
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
-    CMS.get_project!(id)
-    |> IO.inspect()
+    project = CMS.get_project!(id)
+
+    IO.inspect(project.user_projects)
 
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:project, CMS.get_project!(id))}
+     |> assign(:project, project)}
   end
 
   defp page_title(:show), do: "Show Project"

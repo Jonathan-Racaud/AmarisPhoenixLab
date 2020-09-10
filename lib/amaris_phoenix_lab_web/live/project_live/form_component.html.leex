@@ -18,5 +18,20 @@
     <%= error_tag f, :description %>
   </div>
 
+  <div class="form-group">
+    <%= label f, :owner_id %>
+    <%= select f, :owner_id, Enum.map(@users, &{&1.email, &1.id}), class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :contributors %>
+    <%= multiple_select f, :contributors_id, Enum.map(@users, &{&1.email, &1.id}), class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :categories %>
+    <%= multiple_select f, :categories_id, Enum.map(@categories, &{&1.name, &1.id}), class: "form-control" %>
+  </div>
+
   <%= submit "Save", phx_disable_with: "Saving...", class: "btn btn-primary" %>
 </form>
