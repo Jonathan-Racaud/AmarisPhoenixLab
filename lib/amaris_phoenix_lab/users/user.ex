@@ -1,9 +1,11 @@
 defmodule AmarisPhoenixLab.Users.User do
   use Ecto.Schema
   use Pow.Ecto.Schema
+  alias AmarisPhoenixLab.CMS.{Project, UserProject}
 
   schema "users" do
     field :role, :string, default: "user"
+    many_to_many :user_projects, Project, join_through: UserProject, on_replace: :delete
 
     pow_user_fields()
 

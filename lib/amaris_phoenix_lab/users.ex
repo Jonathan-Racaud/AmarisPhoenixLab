@@ -5,7 +5,6 @@ defmodule AmarisPhoenixLab.Users do
   use Pow.Ecto.Context,
     repo: AmarisPhoenixLab.Repo,
     user: AmarisPhoenixLab.Users.User
-  import Ecto.Query
   alias AmarisPhoenixLab.{Repo, Users.User}
 
   @type t :: %User{}
@@ -42,13 +41,16 @@ defmodule AmarisPhoenixLab.Users do
     User.changeset(user, attrs)
   end
 
-  # def authenticate(params), do: pow_authenticate(params)
-
   def update_user(attrs) do
     pow_create(attrs)
   end
 
   def list_users do
     Repo.all(User)
+  end
+
+  def get_with_projects(clauses) do
+    get_by(clauses)
+    |> Repo.preload(:user_projects)
   end
 end

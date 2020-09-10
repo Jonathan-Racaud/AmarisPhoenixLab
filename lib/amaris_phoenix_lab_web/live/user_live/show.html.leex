@@ -1,13 +1,13 @@
-<h1>Show Project</h1>
+<h1>Show User</h1>
 
 <%= if Users.is_admin?(@current_user) do %>
   <%= if @live_action in [:edit] do %>
-    <%= live_modal @socket, AmarisPhoenixLabWeb.ProjectLive.FormComponent,
-      id: @project.id,
+    <%= live_modal @socket, AmarisPhoenixLabWeb.UserLive.FormComponent,
+      id: @user.id,
       title: @page_title,
       action: @live_action,
-      project: @project,
-      return_to: Routes.project_show_path(@socket, :show, @project) %>
+      project: @user,
+      return_to: Routes.project_show_path(@socket, :show, @user) %>
   <% end %>
 <% end %>
 
@@ -15,24 +15,19 @@
 
   <li>
     <strong>Name:</strong>
-    <%= @project.name %>
-  </li>
-
-  <li>
-    <strong>Description:</strong>
-    <%= @project.description %>
+    <%= @user.email %>
   </li>
 
   <%= if Users.is_admin?(@current_user) do %>
     <li>
       <strong>Is deleted:</strong>
-      <%= @project.is_deleted %>
+      <%= @user.is_deleted %>
     </li>
   <% end %>
 
 </ul>
 
 <%= if Users.is_admin?(@current_user) do %>
-  <span><%= live_patch "Edit", to: Routes.project_show_path(@socket, :edit, @project), class: "button" %></span>
+  <span><%= live_patch "Edit", to: Routes.project_show_path(@socket, :edit, @user), class: "button" %></span>
 <% end %>
 <span><%= live_redirect "Back", to: Routes.project_index_path(@socket, :index) %></span>
