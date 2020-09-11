@@ -18,13 +18,16 @@
     <%= @user.email %>
   </li>
 
-  <%= if Users.is_admin?(@current_user) do %>
-    <li>
-      <strong>Is deleted:</strong>
-      <%= @user.is_deleted %>
+</ul>
+
+<h3>Projects</h3>
+<ul class="list-group">
+  <%= for project <- @user.projects do %>
+    <li class="list-group-item">
+      <%= project.name %>
+      <span><%= live_redirect "Show", to: Routes.project_show_path(@socket, :show, project) %></span>
     </li>
   <% end %>
-
 </ul>
 
 <%= if Users.is_admin?(@current_user) do %>

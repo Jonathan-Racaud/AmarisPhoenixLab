@@ -12,13 +12,10 @@ defmodule AmarisPhoenixLabWeb.UserLive.Show do
 
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
-    Users.get_with_projects([id: id])
-    |> IO.inspect
-
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:user, Users.get_with_projects([id: id]))}
+     |> assign(:user, Users.get_user!(id))}
   end
 
   defp page_title(:show), do: "Show User"

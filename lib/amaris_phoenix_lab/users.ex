@@ -50,6 +50,11 @@ defmodule AmarisPhoenixLab.Users do
     |> Repo.preload(:projects)
   end
 
+  def get_user!(id) do
+     pow_get_by([id: id])
+     |> Repo.preload(:projects)
+  end
+
   def get_users(nil), do: []
   def get_users(ids) do
     User
