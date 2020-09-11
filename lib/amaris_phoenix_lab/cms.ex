@@ -58,8 +58,9 @@ defmodule AmarisPhoenixLab.CMS do
 
   """
   def create_project(attrs \\ %{}) do
-    %Project{}
+    %Project{contributors: [], categories: []}
     |> Project.changeset(attrs)
+    |> maybe_put_categories(attrs)
     |> maybe_put_contributors(attrs)
     |> Repo.insert()
   end
@@ -78,8 +79,10 @@ defmodule AmarisPhoenixLab.CMS do
   """
   def update_project(%Project{} = project, attrs) do
     project
+    |> Repo.preload(:contributors)
     |> Project.changeset(attrs)
     |> maybe_put_contributors(attrs)
+    |> maybe_put_categories(attrs)
     |> Repo.update()
   end
 
@@ -112,10 +115,20 @@ defmodule AmarisPhoenixLab.CMS do
     Project.changeset(project, attrs)
   end
 
-  defp maybe_put_contributors(changeset, params) do
-    contributors = Users.get_users(params["contributors_id"])
+  defp maybe_put_contributors(project_or_changeset, params) do
+    ids = Enum.map(params["contributors_id"], &String.to_integer/1)
+    contributors = Users.get_users(ids)
 
-    Ecto.Changeset.put_assoc(changeset, :contributors, contributors)
+    project_or_changeset
+    |> Ecto.Changeset.put_assoc(:contributors, contributors)
+  end
+
+  defp maybe_put_categories(project_or_changeset, params) do
+    ids = Enum.map(params["categories_id"], &String.to_integer/1)
+    categories = get_categories(ids)
+
+    project_or_changeset
+    |> Ecto.Changeset.put_assoc(:categories, categories)
   end
   # defp maybe_put_contributors(changeset, _), do: changeset
 
@@ -149,6 +162,13 @@ defmodule AmarisPhoenixLab.CMS do
 
   """
   def get_category!(id), do: Repo.get!(Category, id)
+
+  def get_categories(nil), do: []
+  def get_categories(ids) do
+    Category
+    |> where([c], c.id in ^ids)
+    |> Repo.all
+  end
 
   @doc """
   Creates a category.

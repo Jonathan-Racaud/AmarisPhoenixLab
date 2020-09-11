@@ -16,6 +16,11 @@
   <li>
     <strong>Name:</strong>
     <%= @project.name %>
+    <%= if Users.is_admin?(@current_user) and @project.is_deleted do %>
+      <span class="badge text-danger">Deleted</span>
+      <% else %>
+      <span class="badge text-info">Active</span>
+  <% end %>
   </li>
 
   <li>
@@ -23,16 +28,26 @@
     <%= @project.description %>
   </li>
 
-  <%= if Users.is_admin?(@current_user) do %>
-    <li>
-      <strong>Is deleted:</strong>
-      <%= @project.is_deleted %>
-    </li>
-  <% end %>
+  <li>
+    <ul>
+    <%= for category <- @project.categories do %>
+      <li>
+        <%= category.name %>
+      </li>
+    <% end %>
+    </ul>
+  </li>
 </ul>
 
 <h3>Contributors</h3>
-
+<ul class="list-group">
+  <%= for user <- @project.contributors do %>
+    <li class="list-group-item">
+      <%= user.email %>
+      <span><%= live_redirect "Show", to: Routes.user_show_path(@socket, :show, user) %></span>
+    </li>
+  <% end %>
+</ul>
 
 <%= if Users.is_admin?(@current_user) do %>
   <span><%= live_patch "Edit", to: Routes.project_show_path(@socket, :edit, @project), class: "button" %></span>

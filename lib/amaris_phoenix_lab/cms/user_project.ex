@@ -5,9 +5,7 @@ defmodule AmarisPhoenixLab.CMS.UserProject do
 
   @primary_key false
   schema "user_projects" do
-    belongs_to :users, User
-    belongs_to :projects, Project
-
-    timestamps()
+    belongs_to :users, User, primary_key: true
+    belongs_to :projects, Project, primary_key: true
   end
 end

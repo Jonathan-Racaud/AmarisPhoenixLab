@@ -5,8 +5,6 @@ defmodule AmarisPhoenixLab.Repo.Migrations.AddTableProjectCategory do
     create table(:project_categories, primary_key: false) do
       add(:project_id, references(:projects, on_delete: :delete_all), primary_key: true)
       add(:category_id, references(:categories, on_delete: :delete_all), primary_key: true)
-
-      timestamps()
     end
 
     create index(:project_categories, [:project_id])

@@ -52,10 +52,9 @@ defmodule AmarisPhoenixLab.Users do
 
   def get_users(nil), do: []
   def get_users(ids) do
-    IO.puts("Getting users")
-      User
-      |> where([u], u.id in ^ids)
-      |> Repo.preload(:projects)
-      |> Repo.all
+    User
+    |> where([u], u.id in ^ids)
+    |> Repo.all
+    |> Repo.preload(:projects)
   end
 end
