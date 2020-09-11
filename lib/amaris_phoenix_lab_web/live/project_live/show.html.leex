@@ -44,11 +44,11 @@
 </ul>
 
 
-  <%= if is_contributor(@project, @current_user) do %>
-    <button class="btn btn-danger" phx-click="leave_project" phx-value-user="<%= @current_user.id %>">Leave</button>
-  <% else %>
-    <button class="btn btn-success" phx-click="join_project" phx-value-user="<%= @current_user.id %>">Join</button>
-  <% end %>
+<%= if is_contributor(@project, @current_user) do %>
+  <button class="btn btn-danger" phx-click="leave_project" phx-value-user="<%= @current_user.id %>">Leave</button>
+<% else %>
+  <button class="btn btn-success" phx-click="join_project" phx-value-user="<%= @current_user.id %>">Join</button>
+<% end %>
 
 <hr class="my-4">
 
@@ -60,10 +60,12 @@
       <span class="align-self-center flex-grow-1"><%= user.email %></span>
       <span><%= live_redirect "Show", to: Routes.user_show_path(@socket, :show, user), class: "btn btn-primary mr-2" %></span>
 
-      <%= if is_contributor(@project, user) do %>
-        <button class="btn btn-danger" phx-click="leave_project" phx-value-user="<%= user.id %>">Leave</button>
-      <% else %>
-        <button class="btn btn-success" phx-click="join_project" phx-value-user="<%= user.id %>">Join</button>
+      <%= if Users.is_admin?(@current_user) do %>
+        <%= if is_contributor(@project, user) do %>
+          <button class="btn btn-danger" phx-click="leave_project" phx-value-user="<%= user.id %>">Leave</button>
+        <% else %>
+          <button class="btn btn-success" phx-click="join_project" phx-value-user="<%= user.id %>">Join</button>
+        <% end %>
       <% end %>
 
     </li>

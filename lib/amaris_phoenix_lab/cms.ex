@@ -7,7 +7,7 @@ defmodule AmarisPhoenixLab.CMS do
   alias AmarisPhoenixLab.Repo
 
   alias AmarisPhoenixLab.CMS.Project
-  alias AmarisPhoenixLab.{Users, Users.User}
+  alias AmarisPhoenixLab.{Users}
 
   @doc """
   Returns the list of projects.
@@ -130,15 +130,6 @@ defmodule AmarisPhoenixLab.CMS do
   defp maybe_put_contributors(project_or_changeset, _), do: project_or_changeset
 
   defp maybe_put_categories(project_or_changeset, %{categories: ids}) do
-    IO.puts ""
-    IO.puts ""
-    IO.puts ""
-    IO.puts ""
-    IO.puts "Params are: "
-    IO.inspect(ids)
-    IO.puts ""
-    IO.puts ""
-
     ids = Enum.map(ids, &String.to_integer/1)
     categories = get_categories(ids)
 
