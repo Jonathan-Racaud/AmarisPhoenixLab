@@ -7,7 +7,7 @@ defmodule AmarisPhoenixLab.CMS do
   alias AmarisPhoenixLab.Repo
 
   alias AmarisPhoenixLab.CMS.Project
-  alias AmarisPhoenixLab.Users
+  alias AmarisPhoenixLab.{Users, Users.User}
 
   @doc """
   Returns the list of projects.
@@ -115,22 +115,37 @@ defmodule AmarisPhoenixLab.CMS do
     Project.changeset(project, attrs)
   end
 
-  defp maybe_put_contributors(project_or_changeset, params) do
+  defp maybe_put_contributors(project_or_changeset, %{contributors: contributors}) do
+    project_or_changeset
+    |> Ecto.Changeset.put_assoc(:contributors, contributors)
+  end
+
+  defp maybe_put_contributors(project_or_changeset, params) when is_map(params) do
     ids = Enum.map(params["contributors_id"], &String.to_integer/1)
     contributors = Users.get_users(ids)
 
     project_or_changeset
     |> Ecto.Changeset.put_assoc(:contributors, contributors)
   end
+  defp maybe_put_contributors(project_or_changeset, _), do: project_or_changeset
 
-  defp maybe_put_categories(project_or_changeset, params) do
-    ids = Enum.map(params["categories_id"], &String.to_integer/1)
+  defp maybe_put_categories(project_or_changeset, %{categories: ids}) do
+    IO.puts ""
+    IO.puts ""
+    IO.puts ""
+    IO.puts ""
+    IO.puts "Params are: "
+    IO.inspect(ids)
+    IO.puts ""
+    IO.puts ""
+
+    ids = Enum.map(ids, &String.to_integer/1)
     categories = get_categories(ids)
 
     project_or_changeset
     |> Ecto.Changeset.put_assoc(:categories, categories)
   end
-  # defp maybe_put_contributors(changeset, _), do: changeset
+  defp maybe_put_categories(project_or_changeset, _), do: project_or_changeset
 
   alias AmarisPhoenixLab.CMS.Category
 

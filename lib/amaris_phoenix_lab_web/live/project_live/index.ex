@@ -54,7 +54,6 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Index do
   defp list_users do
     Users.list_users()
   end
-
   def get_new_project do
     %Project{}
     |> Map.put(:contributors, [])

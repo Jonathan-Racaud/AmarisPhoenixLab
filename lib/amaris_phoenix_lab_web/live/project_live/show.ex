@@ -1,8 +1,8 @@
 defmodule AmarisPhoenixLabWeb.ProjectLive.Show do
   use AmarisPhoenixLabWeb, :live_view
 
-  alias AmarisPhoenixLab.CMS
-  alias AmarisPhoenixLab.Users
+  alias AmarisPhoenixLab.{CMS, CMS.Project}
+  alias AmarisPhoenixLab.{Users, Users.User}
   alias AmarisPhoenixLabWeb.Credentials
 
   @impl true
@@ -21,6 +21,48 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Show do
      |> assign(:project, project)}
   end
 
+  @impl true
+  def handle_event("leave_project", %{"user" => user_id, "value" => _}, socket) do
+    project = socket.assigns.project
+    user = Users.get_user!(String.to_integer(user_id))
+
+    contributors = project
+    |> Map.get(:contributors)
+    |> Enum.reject(fn(u) -> u.id == user.id end)
+
+    project = CMS.update_project(project, %{contributors: contributors})
+
+    {:noreply,
+      socket
+      |> assign(:page_title, page_title(socket.assigns.live_action))
+      |> assign(:project, project)}
+  end
+
+  @impl true
+  def handle_event("join_project", %{"user" => user_id, "value" => _}, socket) do
+    project = socket.assigns.project
+    user = Users.get_user!(String.to_integer(user_id))
+
+    contributors = project
+    |> Map.get(:contributors)
+    |> Enum.concat([user])
+
+    project = CMS.update_project(project, %{contributors: contributors})
+
+    {:noreply,
+      socket
+      |> assign(:page_title, page_title(socket.assigns.live_action))
+      |> assign(:project, project)}
+  end
+
   defp page_title(:show), do: "Show Project"
   defp page_title(:edit), do: "Edit Project"
+
+  def is_contributor(%Project{} = project, %User{} = user) do
+    project
+    |> Map.get(:contributors)
+    |> Enum.any?(fn(u) ->
+      u.id == user.id
+    end)
+  end
 end
