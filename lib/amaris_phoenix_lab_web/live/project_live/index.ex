@@ -1,7 +1,7 @@
 defmodule AmarisPhoenixLabWeb.ProjectLive.Index do
   use AmarisPhoenixLabWeb, :live_view
   alias AmarisPhoenixLab.CMS
-  alias AmarisPhoenixLab.CMS.Project
+  alias AmarisPhoenixLab.CMS.{Project, Material}
   alias AmarisPhoenixLabWeb.Credentials
   alias AmarisPhoenixLab.Users
 
@@ -21,6 +21,13 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Index do
     socket
     |> assign(:page_title, "Edit Project")
     |> assign(:project, CMS.get_project!(id))
+  end
+
+  defp apply_action(socket, :upload, %{"id" => id}) do
+    socket
+    |> assign(:page_title, "Edit Project")
+    |> assign(:project, CMS.get_project!(id))
+    |> assign(:material, %Material{})
   end
 
   defp apply_action(socket, :new, _params) do

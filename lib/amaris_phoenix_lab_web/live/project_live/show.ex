@@ -1,7 +1,7 @@
 defmodule AmarisPhoenixLabWeb.ProjectLive.Show do
   use AmarisPhoenixLabWeb, :live_view
 
-  alias AmarisPhoenixLab.{CMS, CMS.Project}
+  alias AmarisPhoenixLab.{CMS, CMS.Project, CMS.Material}
   alias AmarisPhoenixLab.{Users, Users.User}
   alias AmarisPhoenixLabWeb.Credentials
 
@@ -14,11 +14,13 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Show do
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
     project = CMS.get_project!(id)
+    materials = CMS.get_materials(id)
 
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:project, project)}
+     |> assign(:project, project)
+     |> assign(:materials, materials)}
   end
 
   @impl true
@@ -57,6 +59,7 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Show do
 
   defp page_title(:show), do: "Show Project"
   defp page_title(:edit), do: "Edit Project"
+  defp page_title(:upload), do: "Upload Material"
 
   def is_contributor(%Project{} = project, %User{} = user) do
     project

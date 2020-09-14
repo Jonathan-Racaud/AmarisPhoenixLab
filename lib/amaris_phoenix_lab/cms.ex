@@ -339,6 +339,9 @@ defmodule AmarisPhoenixLab.CMS do
 
   alias AmarisPhoenixLab.CMS.Material
 
+  @upload_dir "priv/materials"
+  @material_error {:error, "File or Url needed"}
+
   @doc """
   Returns the list of materials.
 
@@ -368,6 +371,12 @@ defmodule AmarisPhoenixLab.CMS do
   """
   def get_material!(id), do: Repo.get!(Material, id)
 
+  def get_materials(project_id) do
+    Material
+    |> where([m], m.project_id == ^project_id)
+    |> Repo.all()
+  end
+
   @doc """
   Creates a material.
 
@@ -381,9 +390,50 @@ defmodule AmarisPhoenixLab.CMS do
 
   """
   def create_material(attrs \\ %{}) do
+    case get_file_or_url(attrs) do
+      {:error, _} -> @material_error
+
+      {:ok, :url, url} ->
+        IO.puts("Adding url source")
+
+        attrs = Map.put(attrs, "source", url)
+        save_material_to_db(attrs)
+
+      {:ok, :file, file} ->
+        IO.puts("Adding file source")
+        project_id = attrs["project_id"]
+        material_folder = Path.absname("#{@upload_dir}/#{project_id}")
+        file_path = Path.absname("#{material_folder}/#{file.filename}")
+
+        File.mkdir_p(material_folder)
+
+        try do
+          File.cp!(file.path, file_path)
+          Map.put(attrs, "source", file_path)
+          save_material_to_db(attrs)
+        rescue
+          File.CopyError -> @material_error
+        end
+    end
+  end
+
+  defp save_material_to_db(attrs) do
+    IO.puts("Saving material to db")
     %Material{}
     |> Material.changeset(attrs)
     |> Repo.insert()
+  end
+
+  defp get_file_or_url([]), do: @material_error
+  defp get_file_or_url(attrs) do
+    has_file = Map.has_key?(attrs, "file")
+    has_url = Map.has_key?(attrs, "url")
+
+    cond do
+      has_file -> {:ok, :file, attrs["file"]}
+      has_url -> {:ok, :url, attrs["url"]}
+      true -> @material_error
+    end
   end
 
   @doc """

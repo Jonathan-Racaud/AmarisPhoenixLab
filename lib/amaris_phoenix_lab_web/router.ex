@@ -60,6 +60,8 @@ defmodule AmarisPhoenixLabWeb.Router do
     # CMS.Project routes
     live "/projects", ProjectLive.Index, :index
     live "/projects/:id", ProjectLive.Show, :show
+    live "/projects/:id/upload", ProjectLive.Index, :upload
+    live "/projects/:id/show/upload", ProjectLive.Show, :upload
 
     # Users.User routes
     live "/users", UserLive.Index, :index

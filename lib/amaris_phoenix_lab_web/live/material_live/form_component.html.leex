@@ -1,0 +1,34 @@
+<h2><%= @title %></h2>
+
+<%= f = form_for @changeset, "#",
+  id: "material-form",
+  phx_target: @myself,
+  phx_change: "validate",
+  phx_submit: "save",
+  multipart: true %>
+
+  <div class="form-group">
+    <%= label f, :name %>
+    <%= validated_text_input f, :name, class: "form-control" %>
+    <%= error_tag f, :name %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :url %>
+    <%= text_input f, :url, class: "form-control" %>
+    <%= error_tag f, :url %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :file %><span class="small ml-2 alert-info p-2">Not implemented in live_view, needs custom JS Interop workaround</span>
+    <%= file_input f, :file, class: "form-control", disabled: true %>
+    <%= error_tag f, :file %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :type_id %>
+    <%= select f, :type_id, Enum.map(@material_types, &{&1.name, &1.id}), class: "form-control" %>
+  </div>
+
+  <%= submit "Save", phx_disable_with: "Saving...", class: "btn btn-primary" %>
+</form>

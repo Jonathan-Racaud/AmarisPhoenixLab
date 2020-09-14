@@ -20,6 +20,17 @@
   <% end %>
 <% end %>
 
+<%= if @live_action in [:upload] do %>
+  <%= live_modal @socket, AmarisPhoenixLabWeb.MaterialLive.FormComponent,
+    id: @project.id,
+    title: @page_title,
+    action: @live_action,
+    project_id: @project.id,
+    material: %Material{},
+    material_types: CMS.list_material_types(),
+    return_to: Routes.project_show_path(@socket, :show, @project) %>
+<% end %>
+
 <ul>
 
   <li>
@@ -49,6 +60,10 @@
 <% else %>
   <button class="btn btn-success" phx-click="join_project" phx-value-user="<%= @current_user.id %>">Join</button>
 <% end %>
+<%= if Users.is_admin?(@current_user) do %>
+  <span><%= live_patch "Edit", to: Routes.project_show_path(@socket, :edit, @project), class: "btn btn-primary" %></span>
+<% end %>
+  <span><%= live_redirect "Back", to: Routes.project_index_path(@socket, :index), class: "btn btn-primary" %></span>
 
 <hr class="my-4">
 
@@ -75,7 +90,20 @@
 <p class="alert-info">This project has no contributors</p>
 <% end %>
 
-<%= if Users.is_admin?(@current_user) do %>
-  <span><%= live_patch "Edit", to: Routes.project_show_path(@socket, :edit, @project), class: "button" %></span>
-<% end %>
-<span><%= live_redirect "Back", to: Routes.project_index_path(@socket, :index) %></span>
+<hr class="my-4">
+
+<div class="row">
+  <div class="col-sm-10">
+    <h3>Materials</h3>
+  </div>
+  <div class="col-sm-2 d-flex justify-content-end">
+    <%= live_patch "Upload", to: Routes.project_show_path(@socket, :upload, @project), class: "btn btn-primary" %>
+  </div>
+</div>
+<ul class="list-group mt-2">
+  <%= for material <- @materials do %>
+    <li class="list-group-item d-flex">
+      <span class="align-self-center flex-grow-1"><%= material.name %></span>
+    </li>
+  <% end %>
+</ul>
