@@ -30,7 +30,7 @@
           <div class="collapse navbar-collapse row justify-content-end" id="navbarNav">
             <div class="navbar-nav">
               <%= if @current_user do %>
-                <%= link @current_user.email, to: "#", class: "nav-link text-white" %>
+                <%= link @current_user.email, to: "/users/#{@current_user.id}", class: "nav-link text-white" %>
                 <%= link "Sign out", to: "/session", method: :delete, class: "nav-link" %>
               <% else %>
                 <%= link "Register", to: "/registration/new", class: "nav-link" %>
