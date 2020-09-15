@@ -1,14 +1,12 @@
 <h1><%= @user.email %></h1>
 
-<%= if Users.is_admin?(@current_user) do %>
-  <%= if @live_action in [:edit] do %>
-    <%= live_modal @socket, AmarisPhoenixLabWeb.UserLive.FormComponent,
-      id: @user.id,
-      title: @page_title,
-      action: @live_action,
-      user: @user,
-      return_to: Routes.user_show_path(@socket, :show, @user) %>
-  <% end %>
+<%= if @live_action in [:edit] and Users.can_edit_user(@current_user, @user) do %>
+  <%= live_modal @socket, AmarisPhoenixLabWeb.UserLive.FormComponent,
+    id: @user.id,
+    title: @page_title,
+    action: @live_action,
+    user: @user,
+    return_to: Routes.user_show_path(@socket, :show, @user) %>
 <% end %>
 
 <%= live_redirect "Back", to: Routes.user_index_path(@socket, :index), class: "btn btn-primary" %>

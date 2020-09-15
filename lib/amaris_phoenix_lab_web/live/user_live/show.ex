@@ -1,6 +1,7 @@
 defmodule AmarisPhoenixLabWeb.UserLive.Show do
   use AmarisPhoenixLabWeb, :live_view
 
+  alias Ecto.Multi
   alias AmarisPhoenixLab.Users
   alias AmarisPhoenixLabWeb.Credentials
 

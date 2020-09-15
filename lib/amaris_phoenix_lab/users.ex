@@ -62,4 +62,12 @@ defmodule AmarisPhoenixLab.Users do
     |> Repo.all
     |> Repo.preload(:projects)
   end
+
+  def can_edit_user(current_user, user) do
+    if is_admin?(current_user) do
+      true
+    else
+      current_user.id == user.id
+    end
+  end
 end

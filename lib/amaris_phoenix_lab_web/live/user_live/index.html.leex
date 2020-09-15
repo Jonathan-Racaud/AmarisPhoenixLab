@@ -12,7 +12,7 @@
 </div>
 <hr class="row my-4">
 
-<%= if @live_action in [:new, :edit] do %>
+<%= if @live_action in [:new, :edit] and Users.can_edit_user(@current_user, @user) do %>
   <%= live_modal @socket, AmarisPhoenixLabWeb.UserLive.FormComponent,
     id: @user.id || :new,
     title: @page_title,
