@@ -34,7 +34,7 @@ defmodule AmarisPhoenixLabWeb.UserLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    user = Users.get_by(id)
+    user = Users.get_user!(id)
     {:ok, _} = Users.delete(user)
 
     {:noreply, assign(socket, :users, list_users())}
