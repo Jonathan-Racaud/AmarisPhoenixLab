@@ -27,6 +27,8 @@ defmodule AmarisPhoenixLabWeb.Router do
   scope "/", AmarisPhoenixLabWeb do
     pipe_through [:browser, :authenticated, :admin]
 
+    live "/admin", AdminLive.Index, :index
+
     # CMS.Category routes
     live "/categories/new", CategoryLive.Index, :new
     live "/categories/:id/edit", CategoryLive.Index, :edit
@@ -46,8 +48,6 @@ defmodule AmarisPhoenixLabWeb.Router do
 
     # Users.User routes
     live "/users/new", UserLive.Index, :new
-    live "/users/:id/edit", UserLive.Index, :edit
-    live "/users/:id/show/edit", UserLive.Show, :edit
   end
 
   scope "/", AmarisPhoenixLabWeb do
@@ -66,6 +66,8 @@ defmodule AmarisPhoenixLabWeb.Router do
     # Users.User routes
     live "/users", UserLive.Index, :index
     live "/users/:id", UserLive.Show, :show
+    live "/users/:id/edit", UserLive.Index, :edit
+    live "/users/:id/show/edit", UserLive.Show, :edit
   end
 
   scope "/", AmarisPhoenixLabWeb do

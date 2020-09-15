@@ -1,0 +1,29 @@
+<h3>Projects</h3>
+<ul class="list-group">
+  <%= for project <- @projects do %>
+    <li class="list-group-item d-flex">
+      <span class="align-self-center flex-grow-1"><%= project.name %></span>
+      <%= live_redirect "Show", to: Routes.project_show_path(@socket, :show, project), class: "btn btn-primary mr-2" %>
+
+      <%= if Users.is_admin?(@current_user) do %>
+        <%= live_patch "Edit", to: Routes.project_index_path(@socket, :edit, project), class: "btn btn-warning mr-2" %>
+        <%= link "Delete", to: "#", phx_click: "delete", phx_value_id: project.id, data: [confirm: "Are you sure?"], class: "btn btn-danger" %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+
+<h3 class="mt-5">Users</h3>
+<ul class="list-group">
+  <%= for user <- @users do %>
+    <li class="list-group-item d-flex">
+      <span class="align-self-center flex-grow-1"><%= user.email %></span>
+      <%= live_redirect "Show", to: Routes.user_show_path(@socket, :show, user), class: "btn btn-primary mr-2" %>
+
+      <%= if Users.is_admin?(@current_user) do %>
+        <%= live_patch "Edit", to: Routes.user_index_path(@socket, :edit, user), class: "btn btn-warning mr-2" %>
+        <%= link "Delete", to: "#", phx_click: "delete", phx_value_id: user.id, data: [confirm: "Are you sure?"], class: "btn btn-danger" %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
