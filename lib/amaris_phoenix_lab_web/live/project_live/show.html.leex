@@ -30,29 +30,20 @@
     material_types: CMS.list_material_types(),
     return_to: Routes.project_show_path(@socket, :show, @project) %>
 <% end %>
+<div>
+  <%= @project.description %>
+</div>
 
-<ul>
+<div class="mb-2">
+  <%= for category <- @project.categories do %>
+    <span class="badge badge-secondary"><%= category.name %></span>
+  <% end %>
+</div>
 
-  <li>
-    <strong>Owner:</strong>
-    <%= Users.get_user!(@project.owner_id).email %>
-  </li>
-
-  <li>
-    <strong>Description:</strong>
-    <%= @project.description %>
-  </li>
-
-  <li>
-    <ul>
-    <%= for category <- @project.categories do %>
-      <li>
-        <%= category.name %>
-      </li>
-    <% end %>
-    </ul>
-  </li>
-</ul>
+<div>
+  <strong>Owner:</strong>
+  <%= Users.get_user!(@project.owner_id).email %>
+</div>
 
 
 <%= if is_contributor(@project, @current_user) do %>
@@ -73,7 +64,7 @@
   <%= for user <- @project.contributors do %>
     <li class="list-group-item d-flex">
       <span class="align-self-center flex-grow-1"><%= user.email %></span>
-      <span><%= live_redirect "Show", to: Routes.user_show_path(@socket, :show, user), class: "btn btn-primary mr-2" %></span>
+      <%= live_redirect "Show", to: Routes.user_show_path(@socket, :show, user), class: "btn btn-primary mr-2" %>
 
       <%= if Users.is_admin?(@current_user) do %>
         <%= if is_contributor(@project, user) do %>
@@ -90,9 +81,7 @@
 <p class="alert-info">This project has no contributors</p>
 <% end %>
 
-<hr class="my-4">
-
-<div class="row">
+<div class="row mt-5">
   <div class="col-sm-10">
     <h3>Materials</h3>
   </div>

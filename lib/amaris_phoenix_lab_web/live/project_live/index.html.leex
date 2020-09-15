@@ -23,18 +23,16 @@
     return_to: Routes.project_index_path(@socket, :index) %>
 <% end %>
 
-<div class="row">
-  <ul class="list-group">
-    <%= for project <- @projects do %>
-      <li class="list-group-item">
-        <%= project.name %>
-        <span><%= live_redirect "Show", to: Routes.project_show_path(@socket, :show, project) %></span>
+<ul class="list-group">
+  <%= for project <- @projects do %>
+    <li class="list-group-item d-flex">
+      <span class="align-self-center flex-grow-1"><%= project.name %></span>
+      <%= live_redirect "Show", to: Routes.project_show_path(@socket, :show, project), class: "btn btn-primary mr-2" %>
 
-        <%= if Users.is_admin?(@current_user) do %>
-          <span><%= live_patch "Edit", to: Routes.project_index_path(@socket, :edit, project) %></span>
-          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: project.id, data: [confirm: "Are you sure?"] %></span>
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
-</div>
+      <%= if Users.is_admin?(@current_user) do %>
+        <%= live_patch "Edit", to: Routes.project_index_path(@socket, :edit, project), class: "btn btn-warning mr-2" %>
+        <%= link "Delete", to: "#", phx_click: "delete", phx_value_id: project.id, data: [confirm: "Are you sure?"], class: "btn btn-danger" %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>

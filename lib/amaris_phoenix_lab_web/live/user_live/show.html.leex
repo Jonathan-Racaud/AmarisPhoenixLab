@@ -1,4 +1,4 @@
-<h1>Show User</h1>
+<h1><%= @user.email %></h1>
 
 <%= if Users.is_admin?(@current_user) do %>
   <%= if @live_action in [:edit] do %>
@@ -6,31 +6,28 @@
       id: @user.id,
       title: @page_title,
       action: @live_action,
-      project: @user,
-      return_to: Routes.project_show_path(@socket, :show, @user) %>
+      user: @user,
+      return_to: Routes.user_show_path(@socket, :show, @user) %>
   <% end %>
 <% end %>
 
-<ul>
+<%= live_redirect "Back", to: Routes.user_index_path(@socket, :index), class: "btn btn-primary" %>
 
-  <li>
-    <strong>Name:</strong>
-    <%= @user.email %>
-  </li>
+<%= if @current_user.id == @user.id do %>
+  <%= live_patch "Edit", to: Routes.user_show_path(@socket, :edit, @user), class: "btn btn-warning" %>
+<% end %>
 
-</ul>
+<%= if Users.is_admin?(@current_user) do %>
+  <%= link "Delete", to: "#", phx_click: "delete", phx_value_id: @user.id, data: [confirm: "Are you sure?"], class: "btn btn-danger" %>
+<% end %>
+<hr class="my-4">
 
 <h3>Projects</h3>
 <ul class="list-group">
   <%= for project <- @user.projects do %>
-    <li class="list-group-item">
-      <%= project.name %>
-      <span><%= live_redirect "Show", to: Routes.project_show_path(@socket, :show, project) %></span>
+    <li class="list-group-item d-flex">
+      <span class="align-self-center flex-grow-1"><%= project.name %></span>
+      <%= live_redirect "Show", to: Routes.project_show_path(@socket, :show, project), class: "btn btn-primary" %>
     </li>
   <% end %>
 </ul>
-
-<%= if Users.is_admin?(@current_user) do %>
-  <span><%= live_patch "Edit", to: Routes.project_show_path(@socket, :edit, @user), class: "button" %></span>
-<% end %>
-<span><%= live_redirect "Back", to: Routes.project_index_path(@socket, :index) %></span>
