@@ -12,5 +12,21 @@
     <%= error_tag f, :email %>
   </div>
 
+<%= if @action in [:edit] do %>
+  <div class="form-group">
+    <%= label f, :current_password %>
+    <%= password_input f, :current_password, class: "form-control" %>
+    <%= error_tag f, :current_password %>
+  </div>
+<% end %>
+
+<%= if @action in [:new] do %>
+  <div class="form-group">
+    <%= label f, :password %>
+    <%= password_input f, :password, class: "form-control" %>
+    <%= error_tag f, :password %>
+  </div>
+<% end %>
+
   <%= submit "Save", phx_disable_with: "Saving...", class: "btn btn-primary" %>
 </form>

@@ -28,7 +28,8 @@ defmodule AmarisPhoenixLabWeb.UserLive.FormComponent do
   end
 
   defp save_user(socket, :edit, user_params) do
-    case Users.update_user(user_params) do
+    user = socket.assigns.user
+    case Users.update_user(user, user_params) do
       {:ok, _user} ->
         {:noreply,
          socket
@@ -41,6 +42,9 @@ defmodule AmarisPhoenixLabWeb.UserLive.FormComponent do
   end
 
   defp save_user(socket, :new, user_params) do
+    password = Map.get(user_params, "password")
+    user_params = Map.put(user_params, "password_confirmation", password)
+
     case Users.create_user(user_params) do
       {:ok, _user} ->
         {:noreply,

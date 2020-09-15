@@ -39,8 +39,8 @@ defmodule AmarisPhoenixLab.Users do
     User.changeset(user, attrs)
   end
 
-  def update_user(attrs) do
-    pow_create(attrs)
+  def update_user(user, attrs) do
+    pow_update(user, attrs)
   end
 
   def list_users do

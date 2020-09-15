@@ -14,10 +14,10 @@ defmodule AmarisPhoenixLabWeb.UserLive.Index do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
-  defp apply_action(socket, :edit, %{"id" => _id} = clause) do
+  defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit User")
-    |> assign(:project, Users.get_by(clause))
+    |> assign(:user, Users.get_user!(id))
   end
 
   defp apply_action(socket, :new, _params) do
