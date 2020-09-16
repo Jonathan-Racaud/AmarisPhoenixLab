@@ -21,8 +21,9 @@
 
   <div class="form-group">
     <%= label f, :file %><span class="small ml-2 alert-info p-2">Not implemented in live_view, needs custom JS Interop workaround</span>
-    <%= file_input f, :file, class: "form-control", disabled: true %>
+    <%= file_input f, :file, [class: "form-control", phx_hook: "file"] %>
     <%= error_tag f, :file %>
+    <%= hidden_input f, :file_base_64, [phx_update: "ignore"] %>
   </div>
 
   <div class="form-group">
@@ -32,3 +33,5 @@
 
   <%= submit "Save", phx_disable_with: "Saving...", class: "btn btn-primary" %>
 </form>
+
+<script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@socket, "/js/upload.js") %>"></script>

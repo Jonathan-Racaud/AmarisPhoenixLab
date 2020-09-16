@@ -13,9 +13,6 @@ defmodule AmarisPhoenixLab.CMS.Material do
 
   @doc false
   def changeset(material, attrs) do
-    IO.puts("Material changeset:")
-    IO.inspect(attrs)
-
     material
     |> cast(attrs, [:name, :project_id, :type_id, :source])
     |> validate_required([:name, :project_id, :type_id])

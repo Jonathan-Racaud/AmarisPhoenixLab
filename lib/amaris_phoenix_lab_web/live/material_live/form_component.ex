@@ -5,8 +5,10 @@ defmodule AmarisPhoenixLabWeb.MaterialLive.FormComponent do
 
   @impl true
   def update(%{material: material} = assigns, socket) do
-    IO.puts("Updating material")
     changeset = CMS.change_material(material)
+
+    IO.puts("Updating material:")
+    IO.inspect(changeset)
 
     {:ok,
      socket
@@ -19,7 +21,8 @@ defmodule AmarisPhoenixLabWeb.MaterialLive.FormComponent do
     project_id = socket.assigns.project_id
     material_params = Map.put(material_params, "project_id", project_id)
 
-    IO.puts("Validating material:")
+    IO.puts("Saving material:")
+    IO.inspect(material_params)
 
     changeset =
       socket.assigns.material
@@ -30,6 +33,8 @@ defmodule AmarisPhoenixLabWeb.MaterialLive.FormComponent do
   end
 
   def handle_event("save", %{"material" => material_params}, socket) do
+    IO.puts("Saving material:")
+    IO.inspect(material_params)
     save_material(socket, socket.assigns.action, material_params)
   end
 
