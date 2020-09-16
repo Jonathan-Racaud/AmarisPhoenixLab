@@ -4,8 +4,6 @@ defmodule AmarisPhoenixLab.CMS.MaterialType do
 
   schema "material_types" do
     field :name, :string
-
-    timestamps()
   end
 
   @doc false

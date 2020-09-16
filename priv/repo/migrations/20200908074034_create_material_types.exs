@@ -4,8 +4,6 @@ defmodule AmarisPhoenixLab.Repo.Migrations.CreateMaterialTypes do
   def change do
     create table(:material_types) do
       add :name, :string
-
-      timestamps()
     end
 
     create unique_index(:material_types, [:name])

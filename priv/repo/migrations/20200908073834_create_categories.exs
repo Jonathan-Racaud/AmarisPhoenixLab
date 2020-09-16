@@ -4,8 +4,6 @@ defmodule AmarisPhoenixLab.Repo.Migrations.CreateCategories do
   def change do
     create table(:categories) do
       add :name, :string
-
-      timestamps()
     end
 
     create unique_index(:categories, [:name])
