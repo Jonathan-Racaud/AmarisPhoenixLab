@@ -28,7 +28,9 @@
       <%= live_redirect "Show", to: Routes.user_show_path(@socket, :show, user), class: "btn btn-primary mr-2" %>
 
       <%= if Users.is_admin?(@current_user) do %>
-        <%= live_patch "Edit", to: Routes.user_index_path(@socket, :edit, user), class: "btn btn-warning mr-2" %>
+        <%= if @current_user.id == user.id do %>
+          <%= live_patch "Edit", to: Routes.user_index_path(@socket, :edit, user), class: "btn btn-warning mr-2" %>
+        <% end %>
         <%= link "Delete", to: "#", phx_click: "delete", phx_value_id: user.id, data: [confirm: "Are you sure?"], class: "btn btn-danger" %>
       <% end %>
     </li>
