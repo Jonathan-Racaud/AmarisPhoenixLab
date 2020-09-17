@@ -63,6 +63,7 @@ defmodule AmarisPhoenixLab.CMS do
     |> maybe_put_categories(attrs)
     |> maybe_put_contributors(attrs)
     |> Repo.insert()
+    |> notify_subscribers([:projects, :created])
   end
 
   @doc """
@@ -84,6 +85,7 @@ defmodule AmarisPhoenixLab.CMS do
     |> maybe_put_contributors(attrs)
     |> maybe_put_categories(attrs)
     |> Repo.update()
+    |> notify_subscribers([:projects, :updated])
   end
 
   @doc """
@@ -100,6 +102,7 @@ defmodule AmarisPhoenixLab.CMS do
   """
   def delete_project(%Project{} = project) do
     Repo.delete(project)
+    |> notify_subscribers([:projects, :deleted])
   end
 
   @doc """
@@ -477,5 +480,15 @@ defmodule AmarisPhoenixLab.CMS do
   """
   def change_material(%Material{} = material, attrs \\ %{}) do
     Material.changeset(material, attrs)
+  end
+
+  def subscribe(:projects) do
+    Phoenix.PubSub.subscribe(AmarisPhoenixLab.PubSub, "projects")
+  end
+
+  defp notify_subscribers({:ok, result}, event) do
+    Phoenix.PubSub.broadcast(AmarisPhoenixLab.PubSub, "projects", {"projects", event, result})
+
+    {:ok, result}
   end
 end

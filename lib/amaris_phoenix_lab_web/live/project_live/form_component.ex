@@ -24,6 +24,7 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.FormComponent do
   end
 
   def handle_event("save", %{"project" => project_params}, socket) do
+    Phoenix.PubSub.broadcast(AmarisPhoenixLab.PubSub, "projects-list-update", :update_projects)
     save_project(socket, socket.assigns.action, project_params)
   end
 

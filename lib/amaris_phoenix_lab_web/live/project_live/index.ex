@@ -7,9 +7,9 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Index do
 
   @impl true
   def mount(_params, session, socket) do
-    current_user = Credentials.get_user(socket, session)
+    if connected?(socket), do: CMS.subscribe(:projects)
 
-    {:ok, assign(socket, projects: list_projects(), current_user: current_user)}
+    {:ok, get_default_socket(socket, session)}
   end
 
   @impl true
@@ -48,6 +48,20 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Index do
     {:ok, _} = CMS.delete_project(project)
 
     {:noreply, assign(socket, :projects, list_projects())}
+  end
+
+  @impl true
+  def handle_info({"projects", [:projects, _], _}, socket) do
+    socket =
+      socket
+      |> assign(:projects, list_projects())
+
+    {:noreply, socket}
+  end
+
+  defp get_default_socket(socket, session) do
+    current_user = Credentials.get_user(socket, session)
+    assign(socket, projects: list_projects(), current_user: current_user)
   end
 
   defp list_projects do
