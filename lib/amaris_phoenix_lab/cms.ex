@@ -115,12 +115,8 @@ defmodule AmarisPhoenixLab.CMS do
     Project.changeset(project, attrs)
   end
 
-  defp maybe_put_contributors(project_or_changeset, %{contributors: contributors}) do
-    project_or_changeset
-    |> Ecto.Changeset.put_assoc(:contributors, contributors)
-  end
-
-  defp maybe_put_contributors(project_or_changeset, params) when is_map(params) do
+  defp maybe_put_contributors(project_or_changeset, %{"contributors_id" => _contributors_id } = params) do
+    IO.puts("Maybe_put_contributors 2")
     ids = Enum.map(params["contributors_id"], &String.to_integer/1)
     contributors = Users.get_users(ids)
 
@@ -129,8 +125,8 @@ defmodule AmarisPhoenixLab.CMS do
   end
   defp maybe_put_contributors(project_or_changeset, _), do: project_or_changeset
 
-  defp maybe_put_categories(project_or_changeset, %{categories: ids}) do
-    ids = Enum.map(ids, &String.to_integer/1)
+  defp maybe_put_categories(project_or_changeset, %{"categories_id" => categories_id}) do
+    ids = Enum.map(categories_id, &String.to_integer/1)
     categories = get_categories(ids)
 
     project_or_changeset
