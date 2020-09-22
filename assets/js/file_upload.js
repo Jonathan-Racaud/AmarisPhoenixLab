@@ -6,12 +6,16 @@
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 
-const upload_hook = {
+let Hooks = {
   file: {
     mounted() {
       this.el.addEventListener("change", e => {
         toBase64(this.el.files[0]).then(base64 => {
-          var hidden = document.getElementById("values_file_base_64");
+          var file_name = document.getElementById("material-form_file_name");
+          file_name.value = this.el.files[0].name;
+          file_name.focus();
+
+          var hidden = document.getElementById("material-form_file_base_64");
           hidden.value = base64;
           hidden.focus(); // Needed to be registered by the live view
         });
@@ -21,17 +25,18 @@ const upload_hook = {
 }
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-let uploadSocket = new LiveSocket(
-    "/live", 
-    Socket, 
-    {
-        params: 
-        {
-            hooks: upload_hook,
-            _csrf_token: csrfToken
-        }
-    });
-uploadSocket.connect();
+// let uploadSocket = new LiveSocket(
+//     "/live", 
+//     Socket, 
+//     {
+//       hooks: Hooks,
+//       params: 
+//       {
+//           _csrf_token: csrfToken
+//       }
+//     });
+// uploadSocket.connect();
+window.liveSocket.hooks = Hooks
 
 const toBase64 = file => new Promise((resolve, reject) => {
   const reader = new FileReader();
@@ -39,5 +44,3 @@ const toBase64 = file => new Promise((resolve, reject) => {
   reader.onload = () => resolve(reader.result);
   reader.onerror = error => reject(error);
 });
-
-window.uploadSocket = uploadSocket

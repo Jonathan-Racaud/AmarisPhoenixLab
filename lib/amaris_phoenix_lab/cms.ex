@@ -339,7 +339,7 @@ defmodule AmarisPhoenixLab.CMS do
   alias AmarisPhoenixLab.CMS.Material
 
   @upload_dir "priv/materials"
-  @material_error {:error, "File or Url needed"}
+  @material_error {:error, "Couldn't save file or url."}
 
   @doc """
   Returns the list of materials.
@@ -388,30 +388,28 @@ defmodule AmarisPhoenixLab.CMS do
       {:error, %Ecto.Changeset{}}
 
   """
+  @url_type 4
+
   def create_material(attrs \\ %{}) do
     case get_file_or_url(attrs) do
       {:error, _} -> @material_error
 
       {:ok, :url, url} ->
-        IO.puts("Adding url source")
-
         attrs = Map.put(attrs, "source", url)
         save_material_to_db(attrs)
 
       {:ok, :file, file} ->
-        IO.puts("Adding file source")
-        project_id = attrs["project_id"]
-        material_folder = Path.absname("#{@upload_dir}/#{project_id}")
-        file_path = Path.absname("#{material_folder}/#{file.filename}")
-
-        File.mkdir_p(material_folder)
-
         try do
-          File.cp!(file.path, file_path)
-          Map.put(attrs, "source", file_path)
+          project_id = attrs["project_id"]
+          material_folder = Path.absname("#{@upload_dir}/#{project_id}")
+          file_path = Path.absname("#{material_folder}/#{file}")
+
+          File.mkdir_p!(material_folder)
+          File.write!(file_path, attrs["file_base_64"])
+          attrs = Map.put(attrs, "source", file_path)
           save_material_to_db(attrs)
         rescue
-          File.CopyError -> @material_error
+          File.Error -> @material_error
         end
     end
   end
@@ -425,14 +423,19 @@ defmodule AmarisPhoenixLab.CMS do
 
   defp get_file_or_url([]), do: @material_error
   defp get_file_or_url(attrs) do
-    has_file = Map.has_key?(attrs, "file")
-    has_url = Map.has_key?(attrs, "url")
-
-    cond do
-      has_file -> {:ok, :file, attrs["file"]}
-      has_url -> {:ok, :url, attrs["url"]}
-      true -> @material_error
+    case attrs["type_id"] do
+      @url_type -> {:ok, :url, attrs["url"]}
+      _ -> {:ok, :file, attrs["file_name"]}
     end
+
+    # has_file = Map.has_key?(attrs, "file")
+    # has_url = Map.has_key?(attrs, "url")
+
+    # cond do
+    #   has_file -> {:ok, :file, attrs["file"]}
+    #   has_url -> {:ok, :url, attrs["url"]}
+    #   true -> @material_error
+    # end
   end
 
   @doc """

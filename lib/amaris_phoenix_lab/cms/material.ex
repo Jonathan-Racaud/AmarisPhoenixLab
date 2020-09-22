@@ -4,7 +4,7 @@ defmodule AmarisPhoenixLab.CMS.Material do
 
   schema "materials" do
     field :name, :string
-    field :source, :string
+    field :source, :string, unique: true
     field :project_id, :id
     field :type_id, :id
 
@@ -15,6 +15,6 @@ defmodule AmarisPhoenixLab.CMS.Material do
   def changeset(material, attrs) do
     material
     |> cast(attrs, [:name, :project_id, :type_id, :source])
-    |> validate_required([:name, :project_id, :type_id])
+    |> validate_required([:name, :project_id, :type_id, :source])
   end
 end

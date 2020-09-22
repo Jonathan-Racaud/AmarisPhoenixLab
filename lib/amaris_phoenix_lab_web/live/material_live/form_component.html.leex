@@ -13,18 +13,23 @@
     <%= error_tag f, :name %>
   </div>
 
+  <%= if @type == 4 do %>
   <div class="form-group">
     <%= label f, :url %>
     <%= text_input f, :url, class: "form-control" %>
     <%= error_tag f, :url %>
   </div>
+  <% end %>
 
+  <%= if @type != 4 do %>
   <div class="form-group">
     <%= label f, :file %><span class="small ml-2 alert-info p-2">Not implemented in live_view, needs custom JS Interop workaround</span>
     <%= file_input f, :file, [class: "form-control", phx_hook: "file"] %>
     <%= error_tag f, :file %>
-    <%= hidden_input f, :file_base_64, [phx_update: "ignore"] %>
+    <%= hidden_input f, :file_base_64 %>
+    <%= hidden_input f, :file_name %>
   </div>
+  <% end %>
 
   <div class="form-group">
     <%= label f, :type_id %>
