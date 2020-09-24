@@ -68,6 +68,8 @@ defmodule AmarisPhoenixLabWeb.Router do
     live "/users/:id", UserLive.Show, :show
     live "/users/:id/edit", UserLive.Index, :edit
     live "/users/:id/show/edit", UserLive.Show, :edit
+
+    get "/download/:material_id", DownloadController, :get_file
   end
 
   scope "/", AmarisPhoenixLabWeb do

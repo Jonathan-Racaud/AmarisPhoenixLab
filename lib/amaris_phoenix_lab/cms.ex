@@ -405,8 +405,19 @@ defmodule AmarisPhoenixLab.CMS do
           file_path = Path.absname("#{material_folder}/#{file}")
 
           File.mkdir_p!(material_folder)
-          File.write!(file_path, attrs["file_base_64"])
+          file_base_64 = attrs["file_base_64"]
+
+          IO.puts "file_base_64:"
+          IO.inspect(file_base_64)
+
+          {_data_start, data_length} = :binary.match(file_base_64, "data:")
+          {raw_start, raw_length} = :binary.match(file_base_64, ";base64,")
+          content_type = :binary.part(file_base_64, data_length, raw_start - data_length)
+          raw = :binary.part(file_base_64, raw_start + raw_length, byte_size(file_base_64) - raw_start - raw_length)
+
+          File.write!(file_path, Base.decode64!(raw))
           attrs = Map.put(attrs, "source", file_path)
+          attrs = Map.put(attrs, "content_type", content_type)
           save_material_to_db(attrs)
         rescue
           File.Error -> @material_error
@@ -427,15 +438,6 @@ defmodule AmarisPhoenixLab.CMS do
       @url_type -> {:ok, :url, attrs["url"]}
       _ -> {:ok, :file, attrs["file_name"]}
     end
-
-    # has_file = Map.has_key?(attrs, "file")
-    # has_url = Map.has_key?(attrs, "url")
-
-    # cond do
-    #   has_file -> {:ok, :file, attrs["file"]}
-    #   has_url -> {:ok, :url, attrs["url"]}
-    #   true -> @material_error
-    # end
   end
 
   @doc """

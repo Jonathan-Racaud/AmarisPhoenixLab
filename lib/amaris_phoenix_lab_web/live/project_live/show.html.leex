@@ -92,7 +92,7 @@
 <ul class="list-group mt-2">
   <%= for material <- @materials do %>
     <li class="list-group-item d-flex">
-      <span class="align-self-center flex-grow-1"><a href="<%= material.source %>"><%= material.name %></span>
+      <span class="align-self-center flex-grow-1"><a href="/download/<%= material.id %>" target="_blank"><%= material.name %></span>
     </li>
   <% end %>
 </ul>
