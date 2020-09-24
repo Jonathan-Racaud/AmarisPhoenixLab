@@ -13,8 +13,4 @@ defmodule AmarisPhoenixLabWeb.DownloadController do
     |> put_resp_header("content-disposition", "attachment; filename=#{filename}")
     |> send_file(200, path)
   end
-
-  def test(conn, _params) do
-    json(conn, %{})
-  end
 end
