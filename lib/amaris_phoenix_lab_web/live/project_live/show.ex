@@ -28,16 +28,12 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Show do
     project = socket.assigns.project
     user = Users.get_user!(String.to_integer(user_id))
 
-    contributors = project
+    contributors_id = project
     |> Map.get(:contributors)
     |> Enum.reject(fn(u) -> u.id == user.id end)
+    |> Enum.map(fn u -> u.id end)
 
-    project = CMS.update_project(project, %{contributors: contributors})
-
-    {:noreply,
-      socket
-      |> assign(:page_title, page_title(socket.assigns.live_action))
-      |> assign(:project, project)}
+    update_project(project, %{:contributors_id => contributors_id}, socket)
   end
 
   @impl true
@@ -45,16 +41,29 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Show do
     project = socket.assigns.project
     user = Users.get_user!(String.to_integer(user_id))
 
-    contributors = project
+    contributors_id = project
     |> Map.get(:contributors)
     |> Enum.concat([user])
+    |> Enum.map(fn u -> u.id end)
 
-    project = CMS.update_project(project, %{contributors: contributors})
+    update_project(project, %{:contributors_id => contributors_id }, socket)
+  end
 
-    {:noreply,
-      socket
-      |> assign(:page_title, page_title(socket.assigns.live_action))
-      |> assign(:project, project)}
+  defp update_project(%Project{} = project, params \\ %{}, socket) do
+    case CMS.update_project(project, params) do
+      {:ok, project} ->
+        {:noreply,
+        socket
+        |> put_flash(:info, "Project updated !")
+        |> assign(:page_title, page_title(socket.assigns.live_action))
+        |> assign(:project, project)}
+      {:error, _} ->
+        {:noreply,
+         socket
+         |> put_flash(:error, "Error updating project")
+         |> assign(:page_title, page_title(socket.assigns.live_action))
+         |> assign(:project, project)}
+    end
   end
 
   defp page_title(:show), do: "Show Project"

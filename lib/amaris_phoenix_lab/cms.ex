@@ -79,6 +79,8 @@ defmodule AmarisPhoenixLab.CMS do
 
   """
   def update_project(%Project{} = project, attrs) do
+    IO.inspect(attrs)
+
     project
     |> Repo.preload(:contributors)
     |> Project.changeset(attrs)
@@ -118,15 +120,19 @@ defmodule AmarisPhoenixLab.CMS do
     Project.changeset(project, attrs)
   end
 
-  defp maybe_put_contributors(project_or_changeset, %{"contributors_id" => _contributors_id } = params) do
+  defp maybe_put_contributors(project_or_changeset, %{:contributors_id => contributors_id } = _params) do
     IO.puts("Maybe_put_contributors 2")
-    ids = Enum.map(params["contributors_id"], &String.to_integer/1)
-    contributors = Users.get_users(ids)
+    # ids = Enum.map(params["contributors_id"], &String.to_integer/1)
+
+    contributors = Users.get_users(contributors_id)
 
     project_or_changeset
     |> Ecto.Changeset.put_assoc(:contributors, contributors)
   end
-  defp maybe_put_contributors(project_or_changeset, _), do: project_or_changeset
+  defp maybe_put_contributors(project_or_changeset, _) do
+    IO.puts "Maybe put contributor"
+    project_or_changeset
+  end
 
   defp maybe_put_categories(project_or_changeset, %{"categories_id" => categories_id}) do
     ids = Enum.map(categories_id, &String.to_integer/1)
