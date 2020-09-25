@@ -37,7 +37,10 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.FormComponent do
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, :changeset, changeset)}
+        {:noreply,
+        socket
+        |> put_flash(:error, "Error updating project")
+        |> assign(:changeset, changeset)}
     end
   end
 

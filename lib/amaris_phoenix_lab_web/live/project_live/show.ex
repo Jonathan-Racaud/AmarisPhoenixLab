@@ -33,7 +33,7 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Show do
     |> Enum.reject(fn(u) -> u.id == user.id end)
     |> Enum.map(fn u -> u.id end)
 
-    update_project(project, %{:contributors_id => contributors_id}, socket)
+    update_project(socket, project, %{"contributors_id" => contributors_id})
   end
 
   @impl true
@@ -46,10 +46,10 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Show do
     |> Enum.concat([user])
     |> Enum.map(fn u -> u.id end)
 
-    update_project(project, %{:contributors_id => contributors_id }, socket)
+    update_project(socket, project, %{"contributors_id" => contributors_id })
   end
 
-  defp update_project(%Project{} = project, params \\ %{}, socket) do
+  defp update_project(socket, %Project{} = project, params \\ %{}) do
     case CMS.update_project(project, params) do
       {:ok, project} ->
         {:noreply,
