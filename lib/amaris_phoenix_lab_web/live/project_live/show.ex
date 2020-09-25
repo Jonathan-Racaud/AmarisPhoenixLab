@@ -8,6 +8,9 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Show do
   @impl true
   def mount(_params, session, socket) do
     current_user = Credentials.get_user(socket, session)
+
+    if connected?(socket), do: CMS.subscribe(:projects)
+
     {:ok, assign(socket, current_user: current_user)}
   end
 
@@ -47,6 +50,14 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Show do
     |> Enum.map(fn u -> u.id end)
 
     update_project(socket, project, %{"contributors_id" => contributors_id })
+  end
+
+  def handle_info({"projects", [:projects, :updated], project}, socket) do
+    socket =
+      socket
+      |> assign(:project, project)
+
+    {:noreply, socket}
   end
 
   defp update_project(socket, %Project{} = project, params \\ %{}) do
