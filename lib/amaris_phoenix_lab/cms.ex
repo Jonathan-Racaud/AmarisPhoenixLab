@@ -504,6 +504,7 @@ defmodule AmarisPhoenixLab.CMS do
     Phoenix.PubSub.subscribe(AmarisPhoenixLab.PubSub, "projects")
   end
 
+  defp notify_subscribers({:error, changeset}, _event), do: {:error, changeset}
   defp notify_subscribers({:ok, result}, event) do
     Phoenix.PubSub.broadcast(AmarisPhoenixLab.PubSub, "projects", {"projects", event, result})
 

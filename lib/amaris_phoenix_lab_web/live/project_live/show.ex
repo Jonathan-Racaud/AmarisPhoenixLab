@@ -52,6 +52,7 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Show do
     update_project(socket, project, %{"contributors_id" => contributors_id })
   end
 
+  @impl true
   def handle_info({"projects", [:projects, :updated], project}, socket) do
     socket =
       socket

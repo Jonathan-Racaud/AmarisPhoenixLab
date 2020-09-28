@@ -34,3 +34,6 @@ npm-debug.log
 /priv/static/
 
 /config/dev.exs
+
+# We do not want to track user uploaded content
+/priv/materials
