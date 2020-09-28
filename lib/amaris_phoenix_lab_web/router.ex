@@ -84,6 +84,12 @@ defmodule AmarisPhoenixLabWeb.Router do
     pow_routes()
   end
 
+  scope "/", AmarisPhoenixLabWeb do
+    pipe_through :browser
+
+    get "/:anything", ErrorController, :not_found
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", AmarisPhoenixLabWeb do
   #   pipe_through :api
