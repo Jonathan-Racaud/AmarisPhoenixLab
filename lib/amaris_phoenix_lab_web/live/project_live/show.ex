@@ -61,7 +61,7 @@ defmodule AmarisPhoenixLabWeb.ProjectLive.Show do
     {:noreply, socket}
   end
 
-  defp update_project(socket, %Project{} = project, params \\ %{}) do
+  defp update_project(socket, %Project{} = project, params) do
     case CMS.update_project(project, params) do
       {:ok, project} ->
         {:noreply,
